@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Primordial Task",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.primordial.task",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
@@ -20,7 +20,7 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' asset: data: blob:; font-src 'self' data:; connect-src 'self' http://localhost:5173 ws://localhost:5173 https://*.supabase.co wss://*.supabase.co;"
     }
   },
   "bundle": {

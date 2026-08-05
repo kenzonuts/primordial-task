@@ -1,10 +1,10 @@
 [package]
 name = "app"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+description = "Desktop application for Primordial Task workspace and project management."
+authors = ["Primordial Task Team"]
+license = "UNLICENSED"
+repository = "https://github.com/primordial-task/task-manager"
 edition = "2021"
 rust-version = "1.77.2"
 
