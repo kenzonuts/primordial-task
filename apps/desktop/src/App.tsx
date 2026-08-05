@@ -1,3 +1,3 @@
 export default function App() {
-  return <div className="app-shell">Primordial Task foundation initialized.</div>;
+  return <div className="app-shell">Primordial Task infrastructure bootstrap initialized.</div>;
 }
