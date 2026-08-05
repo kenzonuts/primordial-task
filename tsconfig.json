@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "ignoreDeprecations": "6.0",
+
+    "baseUrl": ".",
+
+    "paths": {
+      "@/*": ["apps/desktop/src/*"],
+      "@shared/*": ["packages/shared/src/*"],
+      "@core/*": ["packages/core/src/*"],
+      "@features/*": ["packages/features/src/*"],
+      "@ai/*": ["packages/ai/src/*"]
+    }
+  },
+  "include": [
+    "apps/desktop/src",
+    "packages/shared/src",
+    "packages/core/src",
+    "packages/features/src",
+    "packages/ai/src",
+    "apps/desktop/vite.config.ts",
+    "playwright.config.ts",
+    "vitest.config.ts",
+    "vitest.setup.ts"
+  ]
+}

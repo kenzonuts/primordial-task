@@ -1,14 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-import { AppRouter } from '@/routes/app-router'
-import '@/styles/index.css'
-import { AppProviders } from './providers/app-providers'
+import App from '@/App';
+import '@/styles.css';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root');
+
+if (!rootElement) {
+  throw new Error('Root element not found');
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <AppProviders>
-      <AppRouter />
-    </AppProviders>
+    <App />
   </React.StrictMode>,
-)
+);

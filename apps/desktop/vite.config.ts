@@ -1,17 +1,23 @@
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
-import path from 'node:path'
-import { defineConfig } from 'vite'
+import { fileURLToPath, URL } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@': path.resolve(import.meta.dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@shared': fileURLToPath(new URL('../../packages/shared/src', import.meta.url)),
+      '@core': fileURLToPath(new URL('../../packages/core/src', import.meta.url)),
+      '@features': fileURLToPath(new URL('../../packages/features/src', import.meta.url)),
+      '@ai': fileURLToPath(new URL('../../packages/ai/src', import.meta.url)),
     },
   },
   server: {
     port: 5173,
-    strictPort: true,
   },
-})
+  preview: {
+    port: 4173,
+  },
+});
