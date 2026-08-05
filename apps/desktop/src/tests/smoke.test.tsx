@@ -18,8 +18,8 @@ describe('app shell', () => {
     expect(await screen.findByLabelText('Dashboard content')).toBeInTheDocument()
   })
 
-  it('still renders foundation route landmark', async () => {
-    window.history.pushState({}, '', '/foundation')
+  it('renders complete dashboard utility shell landmarks', async () => {
+    window.history.pushState({}, '', '/dashboard')
 
     render(
       <AppProviders>
@@ -27,6 +27,9 @@ describe('app shell', () => {
       </AppProviders>,
     )
 
-    expect(await screen.findByLabelText('foundation-ready')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Primary navigation')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Top navigation')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Dashboard content')).toBeInTheDocument()
+    expect(await screen.findByLabelText('Right utility panel')).toBeInTheDocument()
   })
 })
