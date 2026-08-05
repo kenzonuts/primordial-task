@@ -8,6 +8,7 @@ import { useAppBootstrap } from '@shared/hooks/use-app-bootstrap';
 import { QueryProvider } from '@shared/hooks/use-query-provider';
 import { useRootStore } from '@shared/hooks/use-root-store';
 import { ServiceContainerProvider } from '@shared/hooks/use-service-container';
+import { ThemeProvider } from '@ui/theme';
 
 interface ErrorBoundaryState {
   readonly hasError: boolean;
@@ -82,9 +83,11 @@ export const AppBootstrap = (): ReactNode => {
   return (
     <StrictMode>
       <AppErrorBoundary>
-        <QueryProvider>
-          <AppBootstrapHost />
-        </QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            <AppBootstrapHost />
+          </QueryProvider>
+        </ThemeProvider>
       </AppErrorBoundary>
     </StrictMode>
   );

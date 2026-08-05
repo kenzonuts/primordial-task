@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@shared': fileURLToPath(new URL('../../packages/shared/src', import.meta.url)),
+      '@ui': fileURLToPath(new URL('../../packages/shared/src/ui', import.meta.url)),
       '@core': fileURLToPath(new URL('../../packages/core/src', import.meta.url)),
       '@infrastructure': fileURLToPath(
         new URL('../../packages/infrastructure/src', import.meta.url),

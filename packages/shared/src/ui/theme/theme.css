@@ -1,0 +1,119 @@
+@theme inline {
+  --color-app: #0b0b0b;
+  --color-workspace: #141414;
+  --color-secondary: #1c1c1c;
+  --color-surface: #1c1c1c;
+  --color-elevated: #242424;
+  --color-sidebar: #111111;
+  --color-nav: #171717;
+  --color-card: #1f1f1f;
+  --color-input: #181818;
+
+  --color-border-default: #333333;
+  --color-border-subtle: #262626;
+  --color-border-strong: #4a4a4a;
+  --color-divider: #2a2a2a;
+
+  --color-text-primary: #e6e6e6;
+  --color-text-secondary: #a8a8a8;
+  --color-text-muted: #858585;
+  --color-text-disabled: #666666;
+  --color-text-placeholder: #666666;
+
+  --color-hover: #262626;
+  --color-pressed: #303030;
+  --color-selected: #2d2d2d;
+  --color-focus: #f5f5f5;
+  --color-skeleton: #262626;
+  --color-skeleton-highlight: #333333;
+
+  --color-success: #4ade80;
+  --color-success-bg: rgba(74, 222, 128, 0.12);
+  --color-warning: #facc15;
+  --color-warning-bg: rgba(250, 204, 21, 0.12);
+  --color-danger: #f87171;
+  --color-danger-bg: rgba(248, 113, 113, 0.12);
+  --color-info: #60a5fa;
+  --color-info-bg: rgba(96, 165, 250, 0.12);
+
+  --font-sans: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.32);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.36);
+  --shadow-floating: 0 20px 64px rgba(0, 0, 0, 0.42);
+  --shadow-modal: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --shadow-popover: 0 10px 32px rgba(0, 0, 0, 0.34);
+}
+
+.ts-theme,
+[data-theme='dark'] {
+  --bg-app: #0b0b0b;
+  --bg-workspace: #141414;
+  --bg-secondary: #1c1c1c;
+  --surface-base: #1c1c1c;
+  --surface-elevated: #242424;
+  --surface-sidebar: #111111;
+  --surface-nav: #171717;
+  --surface-card: #1f1f1f;
+  --surface-input: #181818;
+
+  --border-default: #333333;
+  --border-subtle: #262626;
+  --border-strong: #4a4a4a;
+  --divider: #2a2a2a;
+
+  --text-primary: #e6e6e6;
+  --text-secondary: #a8a8a8;
+  --text-muted: #858585;
+  --text-disabled: #666666;
+  --text-placeholder: #666666;
+
+  --state-hover: #262626;
+  --state-pressed: #303030;
+  --state-selected: #2d2d2d;
+  --state-focus: #f5f5f5;
+  --state-skeleton: #262626;
+  --state-skeleton-highlight: #333333;
+
+  --success: #4ade80;
+  --success-bg: rgba(74, 222, 128, 0.12);
+  --warning: #facc15;
+  --warning-bg: rgba(250, 204, 21, 0.12);
+  --danger: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.12);
+  --info: #60a5fa;
+  --info-bg: rgba(96, 165, 250, 0.12);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+.tsx {
+  color-scheme: dark;
+}
+
+/* Focus ring convention: highlight only on keyboard focus */
+.tsx :focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

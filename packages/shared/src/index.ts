@@ -20,3 +20,4 @@ export * from '@shared/network/request-wrapper';
 export * from '@shared/network/response-wrapper';
 export * from '@shared/network/retry-strategy';
 export * from '@shared/events/application-events';
+export * from '@shared/ui';
