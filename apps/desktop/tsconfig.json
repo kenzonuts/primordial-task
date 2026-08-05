@@ -7,8 +7,7 @@
     "jsx": "react-jsx",
     "target": "ES2022",
     "module": "ESNext",
-    "types": ["vite/client", "node"],
-    "ignoreDeprecations": "6.0"
+    "types": ["vite/client", "node"]
   },
   "include": ["src", "vite.config.ts"]
 }
