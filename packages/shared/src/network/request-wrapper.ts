@@ -15,7 +15,7 @@ export const createRequestWrapper = (
         return await Promise.race([
           request(),
           new Promise<TResponse>((_, reject) => {
-            window.setTimeout(() => reject(new Error('Request timeout')), timeoutMs);
+            globalThis.setTimeout(() => reject(new Error('Request timeout')), timeoutMs);
           }),
         ]);
       } catch (error) {

@@ -17,7 +17,7 @@ export const createRetryStrategy = ({
         }
 
         await new Promise((resolve) => {
-          window.setTimeout(resolve, backoffMs * attempt);
+          globalThis.setTimeout(resolve, backoffMs * attempt);
         });
       }
     }

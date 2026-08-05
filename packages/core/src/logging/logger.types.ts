@@ -1,7 +1,7 @@
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
 export interface LogMetadata {
-  [key: string]: string | number | boolean | undefined;
+  [key: string]: unknown;
 }
 
 export interface Logger {
@@ -12,5 +12,5 @@ export interface Logger {
 }
 
 export interface LoggerFactory {
-  create(environment: 'development' | 'production' | 'test'): Logger;
+  create(environment: 'development' | 'production' | 'test', minLevel?: LogLevel): Logger;
 }

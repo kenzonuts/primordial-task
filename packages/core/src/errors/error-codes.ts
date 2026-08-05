@@ -5,6 +5,10 @@ export const APP_ERROR_CODES = {
   storage: 'STORAGE_ERROR',
   network: 'NETWORK_ERROR',
   validation: 'VALIDATION_ERROR',
+  timeout: 'TIMEOUT_ERROR',
+  bootstrap: 'BOOTSTRAP_ERROR',
+  route: 'ROUTE_ERROR',
+  event: 'EVENT_ERROR',
 } as const;
 
 export type AppErrorCode = (typeof APP_ERROR_CODES)[keyof typeof APP_ERROR_CODES];

@@ -1,13 +1,19 @@
 import { create } from 'zustand';
 
-interface RootStoreState {
-  appReady: boolean;
-  setAppReady: (value: boolean) => void;
+export interface RootStoreState {
+  readonly appReady: boolean;
+  readonly bootstrapError: string | null;
+  setAppReady(value: boolean): void;
+  setBootstrapError(error: string | null): void;
 }
 
 export const useRootStore = create<RootStoreState>((set) => ({
   appReady: false,
-  setAppReady: (value: boolean) => {
+  bootstrapError: null,
+  setAppReady: (value: boolean): void => {
     set({ appReady: value });
+  },
+  setBootstrapError: (error: string | null): void => {
+    set({ bootstrapError: error });
   },
 }));

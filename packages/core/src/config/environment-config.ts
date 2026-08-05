@@ -1,19 +1,19 @@
+import { normalizeEnvironment } from '@core/app/environment';
+import type { AppEnvironment } from '@core/app/types';
+
 export interface EnvironmentConfig {
-  isDevelopment: boolean;
-  isProduction: boolean;
-  isTest: boolean;
-  rawEnvironment: string;
+  readonly environment: AppEnvironment;
+  readonly isDevelopment: boolean;
+  readonly isProduction: boolean;
+  readonly isTest: boolean;
+  readonly rawEnvironment: string;
 }
 
 export const createEnvironmentConfig = (rawEnvironment: string): EnvironmentConfig => {
-  const normalized =
-    rawEnvironment === 'production'
-      ? 'production'
-      : rawEnvironment === 'test'
-        ? 'test'
-        : 'development';
+  const normalized = normalizeEnvironment(rawEnvironment);
 
   return {
+    environment: normalized,
     isDevelopment: normalized === 'development',
     isProduction: normalized === 'production',
     isTest: normalized === 'test',

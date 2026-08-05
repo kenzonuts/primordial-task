@@ -1,11 +1,13 @@
+import { DEFAULT_RETRY_ATTEMPTS, DEFAULT_TIMEOUT_MS } from '@core/app/constants';
+
 export interface ApiConfig {
-  baseUrl: string;
-  timeoutMs: number;
-  retryAttempts: number;
+  readonly baseUrl: string;
+  readonly timeoutMs: number;
+  readonly retryAttempts: number;
 }
 
 export const createApiConfig = (baseUrl: string): ApiConfig => ({
   baseUrl,
-  timeoutMs: 10_000,
-  retryAttempts: 2,
+  timeoutMs: DEFAULT_TIMEOUT_MS,
+  retryAttempts: DEFAULT_RETRY_ATTEMPTS,
 });

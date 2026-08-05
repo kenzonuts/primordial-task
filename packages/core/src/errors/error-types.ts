@@ -1,11 +1,13 @@
+import type { AppErrorCode } from '@core/errors/error-codes';
+
 export interface AppErrorDetails {
-  code: string;
-  message: string;
-  cause?: unknown;
+  readonly message: string;
+  readonly cause?: unknown;
+  readonly context?: Record<string, unknown>;
 }
 
 export interface AppErrorShape {
-  readonly code: string;
+  readonly code: AppErrorCode;
   readonly message: string;
   readonly details?: AppErrorDetails;
 }

@@ -1,6 +1,6 @@
 export const waitFor = async <TValue>(value: TValue, delayMs = 0): Promise<TValue> => {
   await new Promise((resolve) => {
-    window.setTimeout(resolve, delayMs);
+    globalThis.setTimeout(resolve, delayMs);
   });
 
   return value;

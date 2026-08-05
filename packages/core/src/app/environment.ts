@@ -1,25 +1,31 @@
-import type { AppEnvironment, AppRuntimeContext } from './types';
+import { APP_ENVIRONMENTS, APP_NAME, APP_VERSION } from '@core/app/constants';
+import type { AppEnvironment, AppRuntimeContext, RuntimeEnvironmentSource } from '@core/app/types';
 
-export const normalizeEnvironment = (value: string): AppEnvironment => {
-  if (value === 'production') {
-    return 'production';
+export const normalizeEnvironment = (value?: string): AppEnvironment => {
+  if (!value) {
+    return APP_ENVIRONMENTS.development;
   }
 
-  if (value === 'test') {
-    return 'test';
+  if (value === APP_ENVIRONMENTS.production) {
+    return APP_ENVIRONMENTS.production;
   }
 
-  return 'development';
+  if (value === APP_ENVIRONMENTS.test) {
+    return APP_ENVIRONMENTS.test;
+  }
+
+  return APP_ENVIRONMENTS.development;
 };
 
-export const createAppRuntimeContext = (environment: string): AppRuntimeContext => {
-  const normalizedEnvironment = normalizeEnvironment(environment);
+export const createAppRuntimeContext = (source: RuntimeEnvironmentSource): AppRuntimeContext => {
+  const environment = normalizeEnvironment(source.mode);
 
   return {
-    appName: 'Primordial Task',
-    environment: normalizedEnvironment,
-    isDevelopment: normalizedEnvironment === 'development',
-    isProduction: normalizedEnvironment === 'production',
-    isTest: normalizedEnvironment === 'test',
+    appName: source.appName ?? APP_NAME,
+    appVersion: source.appVersion ?? APP_VERSION,
+    environment,
+    isDevelopment: environment === APP_ENVIRONMENTS.development,
+    isProduction: environment === APP_ENVIRONMENTS.production,
+    isTest: environment === APP_ENVIRONMENTS.test,
   };
 };

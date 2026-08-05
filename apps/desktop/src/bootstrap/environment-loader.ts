@@ -1,7 +1,6 @@
-import { createAppRuntimeContext } from '@core/app/environment';
+import type { RuntimeEnvironmentSource } from '@core/app/types';
+import { getRuntimeEnvironmentSource } from '@infrastructure/config/environment-source';
 
-export const loadEnvironment = (
-  environment = import.meta.env.MODE,
-): ReturnType<typeof createAppRuntimeContext> => {
-  return createAppRuntimeContext(environment);
+export const loadEnvironment = (): RuntimeEnvironmentSource => {
+  return getRuntimeEnvironmentSource();
 };

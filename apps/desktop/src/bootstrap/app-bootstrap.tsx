@@ -1,13 +1,17 @@
-import type { PropsWithChildren } from 'react';
-import { Component, StrictMode, Suspense, useEffect } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { Component, StrictMode, Suspense } from 'react';
+import { useEffect } from 'react';
 
 import App from '@/App';
+import { loadEnvironment } from '@/bootstrap/environment-loader';
+import { useAppBootstrap } from '@shared/hooks/use-app-bootstrap';
 import { QueryProvider } from '@shared/hooks/use-query-provider';
 import { useRootStore } from '@shared/hooks/use-root-store';
+import { ServiceContainerProvider } from '@shared/hooks/use-service-container';
 
 interface ErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
+  readonly hasError: boolean;
+  readonly error: Error | null;
 }
 
 class AppErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> {
@@ -26,7 +30,7 @@ class AppErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> 
     };
   }
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     if (this.state.hasError && this.state.error) {
       return <div role="alert">Application initialization failed: {this.state.error.message}</div>;
     }
@@ -35,21 +39,46 @@ class AppErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> 
   }
 }
 
-const AppBootstrapHost = (): React.ReactNode => {
+const environmentSource = loadEnvironment();
+
+const AppBootstrapHost = (): ReactNode => {
   const setAppReady = useRootStore((state) => state.setAppReady);
+  const setBootstrapError = useRootStore((state) => state.setBootstrapError);
+  const { isLoading, context, error } = useAppBootstrap(environmentSource);
 
   useEffect(() => {
-    setAppReady(true);
-  }, [setAppReady]);
+    if (!isLoading && !error && context) {
+      setAppReady(true);
+      setBootstrapError(null);
+    }
+
+    if (error) {
+      setBootstrapError(error.message);
+    }
+  }, [context, error, isLoading, setAppReady, setBootstrapError]);
+
+  if (isLoading) {
+    return <div>Loading application infrastructure...</div>;
+  }
+
+  if (error) {
+    return <div role="alert">Application bootstrap failed: {error.message}</div>;
+  }
+
+  if (!context) {
+    return <div role="alert">Application bootstrap context unavailable.</div>;
+  }
 
   return (
-    <Suspense fallback={<div>Loading application infrastructure…</div>}>
-      <App />
-    </Suspense>
+    <ServiceContainerProvider container={context.container}>
+      <Suspense fallback={<div>Loading shell...</div>}>
+        <App />
+      </Suspense>
+    </ServiceContainerProvider>
   );
 };
 
-export const AppBootstrap = (): React.ReactNode => {
+export const AppBootstrap = (): ReactNode => {
   return (
     <StrictMode>
       <AppErrorBoundary>

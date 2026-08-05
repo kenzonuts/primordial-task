@@ -21,6 +21,7 @@
       "@/*": ["apps/desktop/src/*"],
       "@shared/*": ["packages/shared/src/*"],
       "@core/*": ["packages/core/src/*"],
+      "@infrastructure/*": ["packages/infrastructure/src/*"],
       "@features/*": ["packages/features/src/*"],
       "@ai/*": ["packages/ai/src/*"]
     }
@@ -29,6 +30,7 @@
     "apps/desktop/src",
     "packages/shared/src",
     "packages/core/src",
+    "packages/infrastructure/src",
     "packages/features/src",
     "packages/ai/src",
     "apps/desktop/vite.config.ts",

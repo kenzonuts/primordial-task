@@ -1,44 +1,28 @@
-import type { HttpClientContract } from '@core/di/contracts';
+import type {
+  HttpClientContract,
+  HttpRequestContract,
+  HttpResponseContract,
+} from '@core/di/contracts';
 
 export class HttpClient implements HttpClientContract {
-  private readonly baseUrl: string;
+  constructor(private readonly baseUrl: string) {}
 
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
-
-  async get<TResponse>(url: string): Promise<TResponse> {
-    const response = await fetch(`${this.baseUrl}${url}`);
-    return response.json() as Promise<TResponse>;
-  }
-
-  async post<TRequest, TResponse>(url: string, body: TRequest): Promise<TResponse> {
-    const response = await fetch(`${this.baseUrl}${url}`, {
-      method: 'POST',
+  async request<TResponse, TBody = unknown>(
+    request: HttpRequestContract<TBody>,
+  ): Promise<HttpResponseContract<TResponse>> {
+    const response = await fetch(`${this.baseUrl}${request.path}`, {
+      method: request.method,
       headers: {
         'Content-Type': 'application/json',
+        ...request.headers,
       },
-      body: JSON.stringify(body),
+      body: request.body ? JSON.stringify(request.body) : undefined,
     });
 
-    return response.json() as Promise<TResponse>;
-  }
-
-  async put<TRequest, TResponse>(url: string, body: TRequest): Promise<TResponse> {
-    const response = await fetch(`${this.baseUrl}${url}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    return response.json() as Promise<TResponse>;
-  }
-
-  async delete(url: string): Promise<void> {
-    await fetch(`${this.baseUrl}${url}`, {
-      method: 'DELETE',
-    });
+    return {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+      data: (await response.json()) as TResponse,
+    };
   }
 }
