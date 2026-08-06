@@ -14,6 +14,8 @@
     "vite.config.ts",
     "../../packages/core/src",
     "../../packages/shared/src",
-    "../../packages/infrastructure/src"
+    "../../packages/infrastructure/src",
+    "../../packages/features/src",
+    "../../packages/ai/src"
   ]
 }
