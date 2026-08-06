@@ -53,10 +53,6 @@ export default tseslint.config(
               group: 'internal',
             },
             {
-              pattern: '@ui/**',
-              group: 'internal',
-            },
-            {
               pattern: '@core/**',
               group: 'internal',
             },
