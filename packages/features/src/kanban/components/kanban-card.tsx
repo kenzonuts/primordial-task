@@ -132,15 +132,11 @@ const KanbanCardComponent = ({
   return (
     <div
       ref={setNodeRef}
-      role="listitem"
-      tabIndex={0}
-      aria-label={ariaLabel}
-      aria-selected={selected}
       data-selected={selected || undefined}
       data-focused={focused || undefined}
       data-dragging={isDragging || undefined}
       data-task-id={task.id}
-      style={style}
+      style={{ minHeight: KANBAN_CARD_MIN_HEIGHT, ...style }}
       className={cn(
         [
           'group relative flex w-full flex-col gap-8 rounded-lg border border-border-subtle',
@@ -156,8 +152,12 @@ const KanbanCardComponent = ({
       )}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      {...(dragHandleProps?.attributes ?? {})}
       {...(dragHandleProps?.listeners ?? {})}
+      {...(dragHandleProps?.attributes ?? {})}
+      role="listitem"
+      tabIndex={0}
+      aria-label={ariaLabel}
+      aria-selected={selected}
     >
       <Inline gap={8} align="start" justify="between" className="w-full">
         <TooltipProvider delayDuration={400}>
@@ -191,7 +191,7 @@ const KanbanCardComponent = ({
         </Inline>
       </Inline>
 
-      <Inline gap={6} align="center" className="flex-wrap">
+      <Inline gap={4} align="center" className="flex-wrap">
         <TaskPriorityBadge priority={task.priority} />
         <TaskStatusBadge status={task.status} />
         {task.labels.slice(0, 2).map((label) => (
@@ -223,7 +223,7 @@ const KanbanCardComponent = ({
       ) : null}
 
       <Inline gap={8} align="center" justify="between" className="mt-auto w-full">
-        <Inline gap={6} align="center" className="min-w-0">
+        <Inline gap={4} align="center" className="min-w-0">
           {task.assignee ? (
             <TooltipProvider delayDuration={300}>
               <Tooltip>
@@ -247,7 +247,7 @@ const KanbanCardComponent = ({
           )}
         </Inline>
 
-        <Inline gap={6} align="center" className="shrink-0 text-text-muted">
+        <Inline gap={4} align="center" className="shrink-0 text-text-muted">
           {task.subtaskCount > 0 ? (
             <Inline
               gap={2}

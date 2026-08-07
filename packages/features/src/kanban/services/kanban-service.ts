@@ -1,8 +1,5 @@
 import { DEFAULT_KANBAN_PREFERENCES } from '@features/kanban/constants';
-import {
-  createLocalPersistence,
-  type PersistenceAdapter,
-} from '@features/kanban/services/persistence';
+import { createLocalPersistence } from '@features/kanban/services/persistence';
 import { DEFAULT_COLUMN_DEFS } from '@features/kanban/types';
 import type {
   CreateBoardInput,
@@ -16,6 +13,7 @@ import type {
   KanbanPreferences,
   KanbanSavedFilter,
   KanbanSwimlane,
+  PersistenceAdapter,
   UpdateBoardInput,
   UpdateColumnInput,
 } from '@features/kanban/types';

@@ -13,6 +13,7 @@ import { VerifyEmailScreen } from '@features/auth/screens/verify-email-screen';
 import { WelcomeScreen } from '@features/auth/screens/welcome-screen';
 import { WorkspaceSelectionScreen } from '@features/auth/screens/workspace-selection-screen';
 import { AUTH_ROUTES } from '@features/auth/types';
+import { KanbanRoutes } from '@features/kanban/routes/kanban-routes';
 import { ProjectRoutes } from '@features/project/routes/project-routes';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { AppShellRoutes } from '@features/shell/routes/app-shell-routes';
@@ -84,6 +85,7 @@ export const AuthRouter = (): ReactElement => {
         {WorkspaceRoutes}
         {ProjectRoutes}
         {TaskRoutes}
+        {KanbanRoutes}
       </Route>
 
       <Route path="*" element={<Navigate to={AUTH_ROUTES.splash} replace />} />

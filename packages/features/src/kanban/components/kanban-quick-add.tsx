@@ -74,7 +74,7 @@ export const KanbanQuickAdd = ({
 
   return (
     <form onSubmit={handleSubmit} className={cn('w-full', className)} aria-label="Quick add task">
-      <Inline gap={6} align="center" className="w-full">
+      <Inline gap={4} align="center" className="w-full">
         <Input
           id={inputId}
           value={title}

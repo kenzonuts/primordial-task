@@ -256,7 +256,7 @@ export const KanbanFilter = ({
       </Inline>
 
       {chips.length > 0 ? (
-        <Inline gap={6} align="center" className="flex-wrap" aria-label="Active filters">
+        <Inline gap={4} align="center" className="flex-wrap" aria-label="Active filters">
           {chips.map((chip) => (
             <Chip key={chip.id} size="sm" removable onRemove={chip.onRemove}>
               {chip.label}

@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
 
 import {
-  COLUMN_WIDTH_PRESETS,
   KANBAN_CARD_GAP,
   KANBAN_CARD_MIN_HEIGHT,
   KANBAN_COLUMN_GAP,
 } from '@features/kanban/constants';
+import { COLUMN_WIDTH_PRESETS } from '@features/kanban/types';
 import { Inline } from '@shared/ui/layout/inline';
 import { Stack } from '@shared/ui/layout/stack';
 import { cn } from '@shared/ui/lib/cn';
@@ -25,7 +25,7 @@ const SkeletonCard = (): ReactElement => {
     >
       <Skeleton className="h-4 w-4/5" />
       <Skeleton className="h-3 w-3/5" />
-      <Inline gap={6} align="center">
+      <Inline gap={4} align="center">
         <Skeleton className="h-5 w-14" />
         <Skeleton className="h-5 w-16" />
       </Inline>

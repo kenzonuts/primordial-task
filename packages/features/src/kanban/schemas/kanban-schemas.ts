@@ -25,9 +25,7 @@ export const createBoardSchema = z.object({
   projectId: z.string().min(1, 'Select a project.'),
   name: boardNameSchema,
   description: boardDescriptionSchema,
-  templateId: z
-    .enum(['software_delivery', 'bug_triage', 'content', 'blank'])
-    .default('software_delivery'),
+  templateId: z.enum(['software_delivery', 'bug_triage', 'content', 'blank']),
 });
 
 export const updateBoardSchema = createBoardSchema.partial().extend({

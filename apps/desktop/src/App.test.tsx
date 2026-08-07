@@ -7,6 +7,8 @@ import { useAuthStore } from '@features/auth/store/auth-store';
 import { AUTH_ROUTES } from '@features/auth/types';
 import { DashboardPage } from '@features/dashboard';
 import { useDashboardStore } from '@features/dashboard/store/dashboard-store';
+import { BoardListPage } from '@features/kanban';
+import { useKanbanBoardStore } from '@features/kanban/store/board-store';
 import { ProjectListPage } from '@features/project';
 import { useProjectStore } from '@features/project/store/project-store';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
@@ -359,6 +361,96 @@ describe('application shell routing', () => {
     await waitFor(
       () => {
         expect(screen.getByRole('heading', { name: /tasks/i })).toBeTruthy();
+      },
+      { timeout: 5000 },
+    );
+  });
+
+  it('renders kanban board list for authenticated users', async () => {
+    useWorkspaceStore.setState({
+      workspaces: [
+        {
+          id: 'ws-1',
+          name: 'Primordial Studio',
+          slug: 'primordial-studio',
+          description: '',
+          color: '#E6E6E6',
+          visibility: 'private',
+          role: 'owner',
+          owner: {
+            id: 'user-1',
+            fullName: 'Demo User',
+            email: 'demo@primordial.task',
+          },
+          memberCount: 1,
+          isFavorite: false,
+          lastUsedAt: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          archivedAt: null,
+        },
+      ],
+      currentWorkspace: {
+        id: 'ws-1',
+        name: 'Primordial Studio',
+        slug: 'primordial-studio',
+        description: '',
+        color: '#E6E6E6',
+        visibility: 'private',
+        role: 'owner',
+        owner: {
+          id: 'user-1',
+          fullName: 'Demo User',
+          email: 'demo@primordial.task',
+        },
+        memberCount: 1,
+        isFavorite: false,
+        lastUsedAt: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        archivedAt: null,
+      },
+      previousWorkspaceId: null,
+      lastUsedWorkspaceId: 'ws-1',
+      members: [],
+      preferences: {
+        defaultView: 'dashboard',
+        density: 'comfortable',
+        showArchivedInSwitcher: false,
+      },
+      filters: {
+        query: '',
+        sort: 'recent',
+        filter: 'all',
+      },
+      status: 'ready',
+      membersStatus: 'idle',
+      error: null,
+      initialized: true,
+    });
+    useKanbanBoardStore.setState({
+      boards: [],
+      currentBoard: null,
+      placements: [],
+      statistics: null,
+      status: 'idle',
+      error: null,
+      workspaceId: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={[APP_ROUTES.kanban]}>
+        <Routes>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path={APP_ROUTES.kanban} element={<BoardListPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByRole('heading', { name: /kanban/i })).toBeTruthy();
       },
       { timeout: 5000 },
     );

@@ -68,7 +68,7 @@ export const KanbanBulkBar = ({
         {selectionCount} selected
       </Text>
 
-      <Inline gap={6} align="center" className="flex-wrap">
+      <Inline gap={4} align="center" className="flex-wrap">
         {onMove ? (
           <Button type="button" size="sm" variant="ghost" disabled={disabled} onClick={onMove}>
             <FolderInput aria-hidden="true" className="size-3.5" />
