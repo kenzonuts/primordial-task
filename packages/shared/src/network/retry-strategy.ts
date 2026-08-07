@@ -1,27 +1,11 @@
-export interface RetryStrategyOptions {
-  attempts: number;
-  backoffMs: number;
-}
+import { createRetryStrategy as createCoreRetryStrategy } from '@core/network/retry-strategy';
+import type { RetryStrategyOptions } from '@core/network/retry-strategy';
 
-export const createRetryStrategy = ({
-  attempts,
-  backoffMs,
-}: RetryStrategyOptions): ((executor: () => Promise<unknown>) => Promise<unknown>) => {
-  return async (executor: () => Promise<unknown>): Promise<unknown> => {
-    for (let attempt = 1; attempt <= attempts; attempt += 1) {
-      try {
-        return await executor();
-      } catch (error) {
-        if (attempt === attempts) {
-          throw error;
-        }
+export type { RetryStrategyOptions } from '@core/network/retry-strategy';
 
-        await new Promise((resolve) => {
-          globalThis.setTimeout(resolve, backoffMs * attempt);
-        });
-      }
-    }
-
-    throw new Error('Retry exhausted');
-  };
+/** Shared re-export of the core retry foundation for non-infra consumers. */
+export const createRetryStrategy = (
+  options: RetryStrategyOptions,
+): ((executor: () => Promise<unknown>) => Promise<unknown>) => {
+  return createCoreRetryStrategy<unknown>(options);
 };

@@ -1,10 +1,12 @@
-import type { PropsWithChildren, ReactNode } from 'react';
-import { Component, StrictMode, Suspense } from 'react';
-import { useEffect } from 'react';
+import type { ErrorInfo, PropsWithChildren, ReactNode } from 'react';
+import { Component, StrictMode, Suspense, useEffect } from 'react';
 
 import App from '@/App';
 import { loadEnvironment } from '@/bootstrap/environment-loader';
-import { useAppBootstrap } from '@shared/hooks/use-app-bootstrap';
+import { useAppBootstrap } from '@/bootstrap/use-app-bootstrap';
+import { normalizeEnvironment } from '@core/app/environment';
+import { APP_ERROR_CODES } from '@core/errors/error-codes';
+import { createLogger } from '@core/logging/logger';
 import { QueryProvider } from '@shared/hooks/use-query-provider';
 import { useRootStore } from '@shared/hooks/use-root-store';
 import { ServiceContainerProvider } from '@shared/hooks/use-service-container';
@@ -28,6 +30,17 @@ class AppErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> 
       hasError: true,
       error,
     };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo): void {
+    const environment = normalizeEnvironment(loadEnvironment().mode);
+    const logger = createLogger(environment);
+
+    logger.error('Unhandled render error', {
+      errorCode: APP_ERROR_CODES.unknown,
+      message: error.message,
+      componentStack: info.componentStack,
+    });
   }
 
   render(): ReactNode {

@@ -1,20 +1,17 @@
-import {
-  DEFAULT_RETRY_ATTEMPTS,
-  DEFAULT_RETRY_BACKOFF_MS,
-  DEFAULT_TIMEOUT_MS,
-} from '@core/app/constants';
+import { DEFAULT_RETRY_BACKOFF_MS } from '@core/app/constants';
+import type { ApiConfig } from '@core/config/api-config';
 import type {
   HttpClientContract,
   HttpRequestContract,
   HttpResponseContract,
 } from '@core/di/contracts';
 import { NetworkError, TimeoutError } from '@core/errors/error-classes';
+import { createRetryStrategy } from '@core/network/retry-strategy';
 import type { HttpInterceptors } from '@infrastructure/network/interceptors';
-import { createRetryStrategy } from '@shared/network/retry-strategy';
 
 export class FetchHttpClient implements HttpClientContract {
   constructor(
-    private readonly baseUrl: string,
+    private readonly apiConfig: ApiConfig,
     private readonly interceptors: HttpInterceptors = {},
   ) {}
 
@@ -23,18 +20,16 @@ export class FetchHttpClient implements HttpClientContract {
   ): Promise<HttpResponseContract<TResponse>> {
     const preparedRequest = this.interceptors.onRequest?.(request) ?? request;
 
-    const retry = createRetryStrategy({
-      attempts: DEFAULT_RETRY_ATTEMPTS,
+    const retry = createRetryStrategy<HttpResponseContract<TResponse>>({
+      attempts: this.apiConfig.retryAttempts,
       backoffMs: DEFAULT_RETRY_BACKOFF_MS,
     });
 
     try {
-      const result = await retry(async () => {
+      return await retry(async () => {
         const response = await this.executeRequest<TResponse, TBody>(preparedRequest);
         return this.interceptors.onResponse?.(response) ?? response;
       });
-
-      return result as HttpResponseContract<TResponse>;
     } catch (error) {
       const handled = this.interceptors.onError?.(error) ?? error;
 
@@ -55,10 +50,10 @@ export class FetchHttpClient implements HttpClientContract {
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       controller.abort();
-    }, DEFAULT_TIMEOUT_MS);
+    }, this.apiConfig.timeoutMs);
 
     try {
-      const response = await fetch(`${this.baseUrl}${request.path}`, {
+      const response = await fetch(`${this.apiConfig.baseUrl}${request.path}`, {
         method: request.method,
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +63,8 @@ export class FetchHttpClient implements HttpClientContract {
         signal: controller.signal,
       });
 
-      const data = (await response.json()) as TResponse;
+      const text = await response.text();
+      const data = text.length > 0 ? (JSON.parse(text) as TResponse) : (null as TResponse);
 
       return {
         status: response.status,

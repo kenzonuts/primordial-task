@@ -13,3 +13,10 @@ export const createBootstrapCompletedEvent = (durationMs: number): ApplicationEv
 export const createBootstrapFailedEvent = (errorCode: AppErrorCode): ApplicationEvent => {
   return createDomainEvent('application.bootstrap.failed', { errorCode });
 };
+
+export const createApplicationErrorEvent = (
+  errorCode: AppErrorCode,
+  message: string,
+): ApplicationEvent => {
+  return createDomainEvent('application.error', { errorCode, message });
+};
