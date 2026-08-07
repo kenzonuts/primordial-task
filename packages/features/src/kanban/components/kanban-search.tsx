@@ -1,5 +1,5 @@
-import type { ChangeEvent, ReactElement, Ref } from 'react';
-import { forwardRef, useEffect, useRef } from 'react';
+import type { ChangeEvent, ReactElement } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { KANBAN_SEARCH_DEBOUNCE_MS } from '@features/kanban/constants';
 import { SearchInput } from '@shared/ui/composites/search-input';
@@ -17,19 +17,16 @@ type KanbanSearchProps = {
   readonly id?: string;
 };
 
-const KanbanSearchInner = (
-  {
-    value,
-    onChange,
-    onDebouncedChange,
-    debounceMs = KANBAN_SEARCH_DEBOUNCE_MS,
-    placeholder = 'Search board…',
-    className,
-    disabled = false,
-    id = 'kanban-search',
-  }: KanbanSearchProps,
-  ref: Ref<HTMLInputElement>,
-): ReactElement => {
+export const KanbanSearch = ({
+  value,
+  onChange,
+  onDebouncedChange,
+  debounceMs = KANBAN_SEARCH_DEBOUNCE_MS,
+  placeholder = 'Search board…',
+  className,
+  disabled = false,
+  id = 'kanban-search',
+}: KanbanSearchProps): ReactElement => {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -50,25 +47,26 @@ const KanbanSearchInner = (
   }, [value, debounceMs, onDebouncedChange]);
 
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent): void => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'f') {
-        const target = event.target as HTMLElement | null;
-        if (target?.closest('[data-kanban-board]')) {
-          event.preventDefault();
-          const input =
-            typeof ref === 'function'
-              ? document.getElementById(id)
-              : (ref?.current ?? document.getElementById(id));
-          if (input instanceof HTMLInputElement) {
-            input.focus();
-            input.select();
-          }
-        }
+    const handleKeyDown = (event: globalThis.KeyboardEvent): void => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'f') {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      const boardRoot = target?.closest('[data-kanban-board]');
+      const boardExists = document.querySelector('[data-kanban-board]');
+      if (!boardRoot && !boardExists) {
+        return;
+      }
+      event.preventDefault();
+      const input = document.getElementById(id);
+      if (input instanceof HTMLInputElement) {
+        input.focus();
+        input.select();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [id, ref]);
+  }, [id]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     onChange(event.target.value);
@@ -76,7 +74,6 @@ const KanbanSearchInner = (
 
   return (
     <SearchInput
-      ref={ref}
       id={id}
       value={value}
       onChange={handleChange}
@@ -88,8 +85,5 @@ const KanbanSearchInner = (
     />
   );
 };
-
-export const KanbanSearch = forwardRef<HTMLInputElement, KanbanSearchProps>(KanbanSearchInner);
-KanbanSearch.displayName = 'KanbanSearch';
 
 export type { KanbanSearchProps };
