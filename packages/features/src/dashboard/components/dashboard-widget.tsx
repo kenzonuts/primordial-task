@@ -63,38 +63,37 @@ export const DashboardWidget = ({
     toggleWidgetCollapsed(id);
   };
 
-  let body: ReactNode = children;
+  const renderBody = (): ReactNode => {
+    if (loadState === 'loading' || loadState === 'idle') {
+      return <WidgetBodySkeleton />;
+    }
 
-  if (refreshing && !children) {
-    body = <WidgetBodySkeleton />;
-  } else if (loadState === 'loading' && !children) {
-    body = <WidgetBodySkeleton />;
-  } else if (loadState === 'error') {
-    body = (
-      <Alert variant="danger" title="Unable to load widget">
-        <Stack gap={12}>
-          <span>{error ?? 'Something went wrong while loading this section.'}</span>
-          <div>
-            <Button type="button" variant="secondary" size="sm" onClick={handleRefresh}>
-              Retry
-            </Button>
-          </div>
-        </Stack>
-      </Alert>
-    );
-  } else if (loadState === 'empty') {
-    body = <EmptyState className="px-2 py-8" title={emptyTitle} description={emptyDescription} />;
-  } else if (loadState === 'loading') {
-    body = <WidgetBodySkeleton />;
-  }
+    if (loadState === 'error') {
+      return (
+        <Alert variant="danger" title="Unable to load widget">
+          <Stack gap={12}>
+            <span>{error ?? 'Something went wrong while loading this section.'}</span>
+            <div>
+              <Button type="button" variant="secondary" size="sm" onClick={handleRefresh}>
+                Retry
+              </Button>
+            </div>
+          </Stack>
+        </Alert>
+      );
+    }
 
-  const contentId = `dashboard-widget-${id}-content`;
+    if (loadState === 'empty') {
+      return <EmptyState className="px-2 py-8" title={emptyTitle} description={emptyDescription} />;
+    }
+
+    return children;
+  };
+
+  const showFooter = loadState === 'ready' && Boolean(onViewAll);
 
   return (
-    <WidgetCard
-      className={cn('ds-transition-fast', className)}
-      aria-labelledby={`dashboard-widget-${id}-title`}
-    >
+    <WidgetCard className={cn('ds-transition-fast', className)}>
       <WidgetHeader
         title={title}
         count={count}
@@ -109,20 +108,14 @@ export const DashboardWidget = ({
       />
 
       <div
-        id={contentId}
+        id={`dashboard-widget-${id}-content`}
         hidden={collapsed}
         aria-hidden={collapsed || undefined}
         className={cn('mt-3 ds-transition-fast', collapsed && 'pointer-events-none')}
       >
-        {body}
-        {loadState === 'ready' || (loadState !== 'empty' && loadState !== 'error' && children) ? (
-          <WidgetFooter onViewAll={onViewAll} viewAllLabel={viewAllLabel} />
-        ) : null}
+        {renderBody()}
+        {showFooter ? <WidgetFooter onViewAll={onViewAll} viewAllLabel={viewAllLabel} /> : null}
       </div>
-
-      <span id={`dashboard-widget-${id}-title`} className="sr-only">
-        {title}
-      </span>
     </WidgetCard>
   );
 };

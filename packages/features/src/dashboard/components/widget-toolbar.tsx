@@ -43,7 +43,7 @@ export const WidgetToolbar = ({
                 loading={refreshing}
                 onClick={onRefresh}
               >
-                <Icon icon={RefreshCw} size="sm" decorative />
+                <Icon icon={RefreshCw} size="dense" decorative />
               </IconButton>
             </TooltipTrigger>
             <TooltipContent side="top">Refresh</TooltipContent>
@@ -61,7 +61,7 @@ export const WidgetToolbar = ({
                 aria-expanded={!collapsed}
                 onClick={onToggleCollapsed}
               >
-                <Icon icon={collapsed ? ChevronDown : ChevronUp} size="sm" decorative />
+                <Icon icon={collapsed ? ChevronDown : ChevronUp} size="dense" decorative />
               </IconButton>
             </TooltipTrigger>
             <TooltipContent side="top">{collapsed ? 'Expand' : 'Collapse'}</TooltipContent>
