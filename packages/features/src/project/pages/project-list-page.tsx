@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
 import { ProjectEmptyState } from '@features/project/components/project-empty-state';
 import { ProjectGrid } from '@features/project/components/project-grid';
@@ -37,10 +38,10 @@ export const ProjectListPage = (): ReactElement => {
   const togglePinned = useProjectStore((state) => state.togglePinned);
   const selectedProjectId = useProjectStore((state) => state.selectedProjectId);
   const setSelectedProjectId = useProjectStore((state) => state.setSelectedProjectId);
-  const projects = useProjectStore(selectFilteredProjects);
-  const pinned = useProjectStore(selectPinnedProjects);
-  const recent = useProjectStore(selectRecentProjects);
-  const favorites = useProjectStore(selectFavoriteProjects);
+  const projects = useProjectStore(useShallow(selectFilteredProjects));
+  const pinned = useProjectStore(useShallow(selectPinnedProjects));
+  const recent = useProjectStore(useShallow(selectRecentProjects));
+  const favorites = useProjectStore(useShallow(selectFavoriteProjects));
   const totalCount = useProjectStore((state) => state.projects.length);
 
   const isLoading = status === 'idle' || status === 'loading';
