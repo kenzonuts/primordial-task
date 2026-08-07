@@ -55,6 +55,9 @@ export type { TaskAttachmentProps } from '@features/task/components/task-attachm
 export { TaskDetail } from '@features/task/components/task-detail';
 export type { TaskDetailProps } from '@features/task/components/task-detail';
 
+export { TaskDetailPanel } from '@features/task/components/task-detail-panel';
+export type { TaskDetailPanelProps } from '@features/task/components/task-detail-panel';
+
 export { TaskEmptyState } from '@features/task/components/task-empty-state';
 export type {
   TaskEmptyStateProps,
