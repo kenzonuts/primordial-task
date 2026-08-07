@@ -103,5 +103,15 @@ export const NAVIGATION_GROUPS: readonly NavigationGroup[] = [
 export const ALL_NAVIGATION_ITEMS = NAVIGATION_GROUPS.flatMap((group) => group.items);
 
 export const findNavigationItem = (pathname: string) => {
-  return ALL_NAVIGATION_ITEMS.find((item) => item.path === pathname) ?? null;
+  const exact = ALL_NAVIGATION_ITEMS.find((item) => item.path === pathname);
+  if (exact) {
+    return exact;
+  }
+
+  // Nested module routes (e.g. /projects/:id) resolve to their parent nav item.
+  return (
+    ALL_NAVIGATION_ITEMS.find(
+      (item) => item.path !== '/' && pathname.startsWith(`${item.path}/`),
+    ) ?? null
+  );
 };

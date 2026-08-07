@@ -7,9 +7,12 @@ import { useAuthStore } from '@features/auth/store/auth-store';
 import { AUTH_ROUTES } from '@features/auth/types';
 import { DashboardPage } from '@features/dashboard';
 import { useDashboardStore } from '@features/dashboard/store/dashboard-store';
+import { ProjectListPage } from '@features/project';
+import { useProjectStore } from '@features/project/store/project-store';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { ModulePlaceholderPage } from '@features/shell/pages/placeholder-page';
 import { APP_ROUTES } from '@features/shell/types';
+import { useWorkspaceStore } from '@features/workspace/store/workspace-store';
 
 describe('authentication routing', () => {
   beforeEach(() => {
@@ -147,5 +150,107 @@ describe('application shell routing', () => {
 
   it('exposes select-workspace auth route separately from shell workspaces', () => {
     expect(AUTH_ROUTES.workspaces).toBe('/select-workspace');
+  });
+
+  it('renders projects list for authenticated users', async () => {
+    useWorkspaceStore.setState({
+      workspaces: [
+        {
+          id: 'ws-1',
+          name: 'Primordial Studio',
+          slug: 'primordial-studio',
+          description: '',
+          color: '#E6E6E6',
+          visibility: 'private',
+          role: 'owner',
+          owner: {
+            id: 'user-1',
+            fullName: 'Demo User',
+            email: 'demo@primordial.task',
+          },
+          memberCount: 1,
+          isFavorite: false,
+          lastUsedAt: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          archivedAt: null,
+        },
+      ],
+      currentWorkspace: {
+        id: 'ws-1',
+        name: 'Primordial Studio',
+        slug: 'primordial-studio',
+        description: '',
+        color: '#E6E6E6',
+        visibility: 'private',
+        role: 'owner',
+        owner: {
+          id: 'user-1',
+          fullName: 'Demo User',
+          email: 'demo@primordial.task',
+        },
+        memberCount: 1,
+        isFavorite: false,
+        lastUsedAt: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        archivedAt: null,
+      },
+      previousWorkspaceId: null,
+      lastUsedWorkspaceId: 'ws-1',
+      members: [],
+      preferences: {
+        defaultView: 'dashboard',
+        density: 'comfortable',
+        showArchivedInSwitcher: false,
+      },
+      filters: {
+        query: '',
+        sort: 'recent',
+        filter: 'all',
+      },
+      status: 'ready',
+      membersStatus: 'idle',
+      error: null,
+      initialized: true,
+    });
+    useProjectStore.setState({
+      projects: [],
+      currentProject: null,
+      selectedProjectId: null,
+      members: [],
+      filters: {
+        query: '',
+        sort: 'updated',
+        filter: 'all',
+        view: 'grid',
+      },
+      preferences: {
+        defaultView: 'grid',
+        showArchivedByDefault: false,
+        denseList: false,
+      },
+      status: 'idle',
+      membersStatus: 'idle',
+      error: null,
+      workspaceId: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={[APP_ROUTES.projects]}>
+        <Routes>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path={APP_ROUTES.projects} element={<ProjectListPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByRole('heading', { name: /projects/i })).toBeTruthy();
+      },
+      { timeout: 5000 },
+    );
   });
 });
