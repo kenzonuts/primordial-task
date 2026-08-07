@@ -14,6 +14,14 @@ export const createAppRouteRegistry = (): InMemoryRouteRegistry => {
     { id: 'verify-email', path: ROUTES.verifyEmail, title: 'Verify Email' },
     { id: 'workspaces', path: ROUTES.workspaces, title: 'Workspace Selection' },
     { id: 'dashboard', path: ROUTES.dashboard, title: 'Dashboard' },
+    { id: 'projects', path: ROUTES.projects, title: 'Projects' },
+    { id: 'tasks', path: ROUTES.tasks, title: 'Tasks' },
+    { id: 'kanban', path: ROUTES.kanban, title: 'Kanban' },
+    { id: 'calendar', path: ROUTES.calendar, title: 'Calendar' },
+    { id: 'analytics', path: ROUTES.analytics, title: 'Analytics' },
+    { id: 'ai-workspace', path: ROUTES.aiWorkspace, title: 'AI Workspace' },
+    { id: 'developer-workspace', path: ROUTES.developerWorkspace, title: 'Developer Workspace' },
+    { id: 'settings', path: ROUTES.settings, title: 'Settings' },
     { id: 'session-expired', path: ROUTES.sessionExpired, title: 'Session Expired' },
   ] as const;
 

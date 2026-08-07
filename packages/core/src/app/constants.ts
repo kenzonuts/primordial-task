@@ -34,5 +34,13 @@ export const ROUTES = {
   verifyEmail: '/verify-email',
   workspaces: '/workspaces',
   dashboard: '/dashboard',
+  projects: '/projects',
+  tasks: '/tasks',
+  kanban: '/kanban',
+  calendar: '/calendar',
+  analytics: '/analytics',
+  aiWorkspace: '/ai-workspace',
+  developerWorkspace: '/developer-workspace',
+  settings: '/settings',
   sessionExpired: '/session-expired',
 } as const;
