@@ -62,3 +62,17 @@ export class BootstrapError extends AppError {
     this.name = 'BootstrapError';
   }
 }
+
+export class RouteError extends AppError {
+  constructor(message: string, details?: AppErrorDetails) {
+    super(APP_ERROR_CODES.route, message, details);
+    this.name = 'RouteError';
+  }
+}
+
+export class EventError extends AppError {
+  constructor(message: string, details?: AppErrorDetails) {
+    super(APP_ERROR_CODES.event, message, details);
+    this.name = 'EventError';
+  }
+}

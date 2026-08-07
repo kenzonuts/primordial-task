@@ -12,7 +12,7 @@ export const APP_ENVIRONMENTS = {
 } as const;
 
 export const DI_TOKENS = {
-  appConfig: 'app-config',
+  rootConfig: 'root-config',
   logger: 'logger',
   eventBus: 'event-bus',
   router: 'router',

@@ -26,7 +26,10 @@ export const createRootConfig = (
   },
 ): RootConfig => {
   return {
-    application: createApplicationConfig(runtime.environment),
+    application: createApplicationConfig(runtime.environment, {
+      appName: runtime.appName,
+      appVersion: runtime.appVersion,
+    }),
     environment: createEnvironmentConfig(runtime.environment),
     api: createApiConfig(options.apiBaseUrl),
     storage: createStorageConfig(),

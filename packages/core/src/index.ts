@@ -17,6 +17,7 @@ export * from '@core/errors/error-types';
 export * from '@core/errors/error-classes';
 export * from '@core/errors/error-utils';
 export * from '@core/events/event-bus';
+export * from '@core/network/retry-strategy';
 export * from '@core/routing/router.types';
 export * from '@core/routing/route-registry';
 export * from '@core/routing/memory-router';

@@ -7,10 +7,13 @@ export interface ApplicationConfig {
   readonly environment: AppEnvironment;
 }
 
-export const createApplicationConfig = (environment: AppEnvironment): ApplicationConfig => {
+export const createApplicationConfig = (
+  environment: AppEnvironment,
+  overrides?: Partial<Pick<ApplicationConfig, 'appName' | 'appVersion'>>,
+): ApplicationConfig => {
   return {
-    appName: APP_NAME,
-    appVersion: APP_VERSION,
+    appName: overrides?.appName ?? APP_NAME,
+    appVersion: overrides?.appVersion ?? APP_VERSION,
     environment,
   };
 };

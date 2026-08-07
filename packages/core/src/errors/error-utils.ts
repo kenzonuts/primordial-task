@@ -43,3 +43,15 @@ export const toAppError = (
 export const getErrorCode = (error: unknown): AppErrorCode => {
   return isAppError(error) ? error.code : APP_ERROR_CODES.unknown;
 };
+
+export const getErrorMessage = (error: unknown): string => {
+  if (isAppError(error) || error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  return 'Unknown error';
+};
