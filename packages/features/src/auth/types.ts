@@ -6,7 +6,7 @@ export const AUTH_ROUTES = {
   register: '/register',
   forgotPassword: '/forgot-password',
   verifyEmail: '/verify-email',
-  workspaces: '/workspaces',
+  workspaces: '/select-workspace',
   dashboard: '/dashboard',
   sessionExpired: '/session-expired',
 } as const;

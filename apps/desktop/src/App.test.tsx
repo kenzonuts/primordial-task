@@ -116,4 +116,8 @@ describe('application shell routing', () => {
     expect(screen.getAllByText(/dashboard/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/coming soon/i).length).toBeGreaterThan(0);
   });
+
+  it('exposes select-workspace auth route separately from shell workspaces', () => {
+    expect(AUTH_ROUTES.workspaces).toBe('/select-workspace');
+  });
 });

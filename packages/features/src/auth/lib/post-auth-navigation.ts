@@ -1,3 +1,4 @@
+import { ROUTES } from '@core/app/constants';
 import { AUTH_ROUTES } from '@features/auth/types';
 import type { AuthWorkspace } from '@features/auth/types';
 
@@ -10,6 +11,7 @@ export interface PostAuthNavigationInput {
 
 /**
  * Resolves where to send the user after a successful auth step.
+ * Single workspace → dashboard. Multiple → shell workspace list.
  * Callers that need to auto-select a single workspace should do so before navigating to dashboard.
  */
 export const resolvePostAuthPath = ({
@@ -34,7 +36,7 @@ export const resolvePostAuthPath = ({
     return AUTH_ROUTES.dashboard;
   }
 
-  return AUTH_ROUTES.workspaces;
+  return ROUTES.workspaces;
 };
 
 export const getUserInitials = (fullName: string | undefined | null): string => {

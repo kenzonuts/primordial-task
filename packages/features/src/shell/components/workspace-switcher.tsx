@@ -2,21 +2,17 @@ import { ChevronsUpDown } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { useMemo } from 'react';
 
-import { useAuthStore } from '@features/auth/store/auth-store';
 import { useWorkspaceUiStore } from '@features/shell/store/workspace-ui-store';
-import type { ShellWorkspaceOption } from '@features/shell/types';
+import { WorkspaceSwitcherMenu } from '@features/workspace/components/workspace-switcher-menu';
+import { getWorkspaceInitials } from '@features/workspace/services/workspace-service';
+import { useWorkspaceStore } from '@features/workspace/store/workspace-store';
+import { toast } from '@shared/ui/feedback/toast';
 import { Icon } from '@shared/ui/icons/icon';
-import { Inline } from '@shared/ui/layout/inline';
 import { Stack } from '@shared/ui/layout/stack';
 import { cn } from '@shared/ui/lib/cn';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@shared/ui/overlays/dropdown-menu';
 import {
@@ -34,43 +30,29 @@ type WorkspaceSwitcherProps = {
   readonly className?: string;
 };
 
-const toShellOption = (workspace: {
-  readonly id: string;
-  readonly name: string;
-  readonly initials: string;
-  readonly role: string;
-}): ShellWorkspaceOption => ({
-  id: workspace.id,
-  name: workspace.name,
-  initials: workspace.initials,
-  role: workspace.role,
-});
-
 export const WorkspaceSwitcher = ({
   collapsed,
   className,
 }: WorkspaceSwitcherProps): ReactElement => {
   const uiOptions = useWorkspaceUiStore((state) => state.options);
   const activeWorkspace = useWorkspaceUiStore((state) => state.activeWorkspace);
-  const setActiveWorkspace = useWorkspaceUiStore((state) => state.setActiveWorkspace);
-  const authWorkspaces = useAuthStore((state) => state.workspaces);
-  const selectedWorkspaceId = useAuthStore((state) => state.selectedWorkspaceId);
-
-  const options = useMemo(() => {
-    if (uiOptions.length > 0) {
-      return uiOptions;
-    }
-    return authWorkspaces.map(toShellOption);
-  }, [authWorkspaces, uiOptions]);
+  const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
+  const switchWorkspace = useWorkspaceStore((state) => state.switchWorkspace);
 
   const current = useMemo(() => {
     if (activeWorkspace) {
       return activeWorkspace;
     }
-    const fromAuth =
-      options.find((workspace) => workspace.id === selectedWorkspaceId) ?? options[0] ?? null;
-    return fromAuth;
-  }, [activeWorkspace, options, selectedWorkspaceId]);
+    if (currentWorkspace) {
+      return {
+        id: currentWorkspace.id,
+        name: currentWorkspace.name,
+        initials: getWorkspaceInitials(currentWorkspace.name),
+        role: currentWorkspace.role,
+      };
+    }
+    return uiOptions[0] ?? null;
+  }, [activeWorkspace, currentWorkspace, uiOptions]);
 
   const trigger = (
     <Button
@@ -122,34 +104,15 @@ export const WorkspaceSwitcher = ({
         <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
       )}
       <DropdownMenuContent align="start" className="w-[240px]">
-        <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-        {options.length === 0 ? (
-          <DropdownMenuItem disabled>No workspaces available</DropdownMenuItem>
-        ) : (
-          <DropdownMenuRadioGroup
-            value={current?.id ?? ''}
-            onValueChange={(id) => {
-              const next = options.find((workspace) => workspace.id === id) ?? null;
-              setActiveWorkspace(next);
-            }}
-          >
-            {options.map((workspace) => (
-              <DropdownMenuRadioItem key={workspace.id} value={workspace.id}>
-                <Inline gap={8} align="center" className="min-w-0">
-                  <Avatar size="xs">
-                    <AvatarFallback initials={workspace.initials} />
-                  </Avatar>
-                  <Text as="span" variant="body-sm" truncate>
-                    {workspace.name}
-                  </Text>
-                </Inline>
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        )}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem disabled>Manage workspace</DropdownMenuItem>
-        <DropdownMenuItem disabled>Invite member</DropdownMenuItem>
+        <WorkspaceSwitcherMenu
+          onSwitch={async (id) => {
+            try {
+              await switchWorkspace(id);
+            } catch (error) {
+              toast.error(error instanceof Error ? error.message : 'Could not switch workspace.');
+            }
+          }}
+        />
       </DropdownMenuContent>
     </DropdownMenu>
   );

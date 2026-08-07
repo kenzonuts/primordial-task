@@ -1,7 +1,6 @@
 import { useEffect, type ReactElement } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
-import { useAuthStore } from '@features/auth/store/auth-store';
 import { CommandPalette } from '@features/shell/components/command-palette';
 import { Sidebar } from '@features/shell/components/sidebar';
 import { TopNavigation } from '@features/shell/components/top-navigation';
@@ -12,6 +11,10 @@ import { useNavigationStore } from '@features/shell/store/navigation-store';
 import { useUtilityPanelStore } from '@features/shell/store/utility-panel-store';
 import { useWorkspaceUiStore } from '@features/shell/store/workspace-ui-store';
 import type { ShellWorkspaceOption } from '@features/shell/types';
+import { WorkspaceProvider } from '@features/workspace/context/workspace-context';
+import { WORKSPACE_ROLE_LABELS } from '@features/workspace/rbac';
+import { getWorkspaceInitials } from '@features/workspace/services/workspace-service';
+import { useWorkspaceStore } from '@features/workspace/store/workspace-store';
 
 /**
  * Persistent authenticated application chrome.
@@ -19,8 +22,9 @@ import type { ShellWorkspaceOption } from '@features/shell/types';
  */
 export const AuthenticatedLayout = (): ReactElement => {
   const location = useLocation();
-  const workspaces = useAuthStore((state) => state.workspaces);
-  const selectedWorkspaceId = useAuthStore((state) => state.selectedWorkspaceId);
+  const workspaces = useWorkspaceStore((state) => state.workspaces);
+  const currentWorkspace = useWorkspaceStore((state) => state.currentWorkspace);
+  const initialize = useWorkspaceStore((state) => state.initialize);
   const setOptions = useWorkspaceUiStore((state) => state.setOptions);
   const setActiveWorkspace = useWorkspaceUiStore((state) => state.setActiveWorkspace);
   const setActivePath = useNavigationStore((state) => state.setActivePath);
@@ -30,19 +34,25 @@ export const AuthenticatedLayout = (): ReactElement => {
   useCommandPaletteShortcut();
 
   useEffect(() => {
-    const options: ShellWorkspaceOption[] = workspaces.map((workspace) => ({
-      id: workspace.id,
-      name: workspace.name,
-      initials: workspace.initials,
-      role: workspace.role,
-    }));
+    void initialize();
+  }, [initialize]);
+
+  useEffect(() => {
+    const options: ShellWorkspaceOption[] = workspaces
+      .filter((workspace) => !workspace.archivedAt)
+      .map((workspace) => ({
+        id: workspace.id,
+        name: workspace.name,
+        initials: getWorkspaceInitials(workspace.name),
+        role: WORKSPACE_ROLE_LABELS[workspace.role],
+      }));
 
     setOptions(options);
 
     const active =
-      options.find((option) => option.id === selectedWorkspaceId) ?? options[0] ?? null;
+      options.find((option) => option.id === currentWorkspace?.id) ?? options[0] ?? null;
     setActiveWorkspace(active);
-  }, [workspaces, selectedWorkspaceId, setOptions, setActiveWorkspace]);
+  }, [workspaces, currentWorkspace, setOptions, setActiveWorkspace]);
 
   useEffect(() => {
     const item = findNavigationItem(location.pathname);
@@ -55,18 +65,20 @@ export const AuthenticatedLayout = (): ReactElement => {
   }, [location.pathname, setActivePath, setBreadcrumbs]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-bg-app">
-      <Sidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <TopNavigation />
-        <div className="flex min-h-0 flex-1">
-          <main className="flex-1 overflow-auto" id="main-content">
-            <Outlet />
-          </main>
-          {panelOpen ? <UtilityPanel /> : null}
+    <WorkspaceProvider>
+      <div className="flex h-screen overflow-hidden bg-bg-app">
+        <Sidebar />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <TopNavigation />
+          <div className="flex min-h-0 flex-1">
+            <main className="flex-1 overflow-auto" id="main-content">
+              <Outlet />
+            </main>
+            {panelOpen ? <UtilityPanel /> : null}
+          </div>
         </div>
+        <CommandPalette />
       </div>
-      <CommandPalette />
-    </div>
+    </WorkspaceProvider>
   );
 };

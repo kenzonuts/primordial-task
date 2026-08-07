@@ -33,6 +33,7 @@ export const ROUTES = {
   forgotPassword: '/forgot-password',
   verifyEmail: '/verify-email',
   workspaces: '/workspaces',
+  selectWorkspace: '/select-workspace',
   dashboard: '/dashboard',
   projects: '/projects',
   tasks: '/tasks',

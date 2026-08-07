@@ -15,6 +15,7 @@ import { WorkspaceSelectionScreen } from '@features/auth/screens/workspace-selec
 import { AUTH_ROUTES } from '@features/auth/types';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { AppShellRoutes } from '@features/shell/routes/app-shell-routes';
+import { WorkspaceRoutes } from '@features/workspace/routes/workspace-routes';
 
 /**
  * Top-level auth route tree for Primordial Task.
@@ -78,6 +79,7 @@ export const AuthRouter = (): ReactElement => {
         }
       >
         {AppShellRoutes}
+        {WorkspaceRoutes}
       </Route>
 
       <Route path="*" element={<Navigate to={AUTH_ROUTES.splash} replace />} />

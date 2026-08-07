@@ -1,7 +1,9 @@
 /**
  * Feature modules package.
- * Auth and Application Shell are available; other modules remain placeholders.
+ * Auth, Application Shell, and Workspace Management are available;
+ * other modules remain placeholders.
  */
 
 export * from '@features/auth';
 export * from '@features/shell';
+export * from '@features/workspace';
