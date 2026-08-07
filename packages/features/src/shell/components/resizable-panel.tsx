@@ -1,6 +1,7 @@
 import type { PointerEvent as ReactPointerEvent, ReactElement, ReactNode } from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
+import { useCommandPaletteStore } from '@features/shell/store/command-palette-store';
 import { useUtilityPanelStore } from '@features/shell/store/utility-panel-store';
 import { cn } from '@shared/ui/lib/cn';
 
@@ -27,10 +28,14 @@ export const ResizablePanel = ({
     }
 
     const onKeyDown = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setOpen(false);
+      if (event.key !== 'Escape') {
+        return;
       }
+      if (useCommandPaletteStore.getState().open) {
+        return;
+      }
+      event.preventDefault();
+      setOpen(false);
     };
 
     window.addEventListener('keydown', onKeyDown);

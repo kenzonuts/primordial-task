@@ -86,7 +86,7 @@ export const UtilityPanel = ({ className }: UtilityPanelProps): ReactElement | n
     mode === 'placeholder' ? PANEL_CARDS : PANEL_CARDS.filter((card) => card.mode === mode);
 
   return (
-    <ResizablePanel className={className} aria-label="Complementary">
+    <ResizablePanel className={className} aria-label="Utilities">
       <PanelHeader title={MODE_TITLES[mode]} onClose={() => setOpen(false)} />
       <PanelContent>
         {visibleCards.map((card) => (

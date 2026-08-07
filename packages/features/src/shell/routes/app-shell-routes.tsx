@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 
 import { ProtectedRoute } from '@features/auth/guards/protected-route';
@@ -19,20 +19,25 @@ export const AuthenticatedAppShell = (): ReactElement => {
 
 /**
  * Nested module route elements for the authenticated shell.
- * Use as children of a layout Route whose element is AuthenticatedAppShell (or equivalent).
+ * Spread as children of a layout Route (Fragment children are discovered by React Router).
+ *
+ * @example
+ * ```tsx
+ * <Route element={<AuthenticatedAppShell />}>
+ *   {AppShellRoutes}
+ * </Route>
+ * ```
  */
-export const AppShellRoutes = (): ReactElement => {
-  return (
-    <>
-      <Route path={APP_ROUTES.dashboard} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.projects} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.tasks} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.kanban} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.calendar} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.analytics} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.aiWorkspace} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.developerWorkspace} element={<ModulePlaceholderPage />} />
-      <Route path={APP_ROUTES.settings} element={<ModulePlaceholderPage />} />
-    </>
-  );
-};
+export const AppShellRoutes: ReactNode = (
+  <>
+    <Route path={APP_ROUTES.dashboard} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.projects} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.tasks} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.kanban} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.calendar} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.analytics} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.aiWorkspace} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.developerWorkspace} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.settings} element={<ModulePlaceholderPage />} />
+  </>
+);

@@ -89,7 +89,7 @@ export const WorkspaceSwitcher = ({
       </Avatar>
       {!collapsed ? (
         <>
-          <Stack gap={0} className="min-w-0 flex-1 items-start">
+          <Stack gap={2} className="min-w-0 flex-1 items-start">
             <Text as="span" variant="body-sm" truncate className="w-full text-left font-medium">
               {current?.name ?? 'No workspace'}
             </Text>

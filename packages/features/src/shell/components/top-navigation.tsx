@@ -42,7 +42,7 @@ export const TopNavigation = ({ className }: TopNavigationProps): ReactElement =
   return (
     <header
       className={cn(
-        'sticky top-0 z-[var(--z-nav)] flex h-12 shrink-0 items-center gap-3',
+        'sticky top-0 z-[var(--z-sticky)] flex h-12 shrink-0 items-center gap-3',
         'border-b border-border-subtle bg-surface-nav px-4',
         className,
       )}

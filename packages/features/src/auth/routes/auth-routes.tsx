@@ -14,8 +14,7 @@ import { WelcomeScreen } from '@features/auth/screens/welcome-screen';
 import { WorkspaceSelectionScreen } from '@features/auth/screens/workspace-selection-screen';
 import { AUTH_ROUTES } from '@features/auth/types';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
-import { ModulePlaceholderPage } from '@features/shell/pages/placeholder-page';
-import { APP_ROUTES } from '@features/shell/types';
+import { AppShellRoutes } from '@features/shell/routes/app-shell-routes';
 
 /**
  * Top-level auth route tree for Primordial Task.
@@ -78,15 +77,7 @@ export const AuthRouter = (): ReactElement => {
           </ProtectedRoute>
         }
       >
-        <Route path={APP_ROUTES.dashboard} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.projects} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.tasks} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.kanban} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.calendar} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.analytics} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.aiWorkspace} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.developerWorkspace} element={<ModulePlaceholderPage />} />
-        <Route path={APP_ROUTES.settings} element={<ModulePlaceholderPage />} />
+        {AppShellRoutes}
       </Route>
 
       <Route path="*" element={<Navigate to={AUTH_ROUTES.splash} replace />} />
