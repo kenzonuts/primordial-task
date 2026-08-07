@@ -26,4 +26,13 @@ export const DI_TOKENS = {
 
 export const ROUTES = {
   root: '/',
+  authCheck: '/auth-check',
+  welcome: '/welcome',
+  login: '/login',
+  register: '/register',
+  forgotPassword: '/forgot-password',
+  verifyEmail: '/verify-email',
+  workspaces: '/workspaces',
+  dashboard: '/dashboard',
+  sessionExpired: '/session-expired',
 } as const;

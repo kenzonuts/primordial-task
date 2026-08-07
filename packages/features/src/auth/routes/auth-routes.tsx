@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { GuestRoute } from '@features/auth/guards/guest-route';
@@ -17,7 +18,7 @@ import { AUTH_ROUTES } from '@features/auth/types';
 /**
  * Top-level auth route tree for Primordial Task.
  */
-export const AuthRouter = (): React.ReactElement => {
+export const AuthRouter = (): ReactElement => {
   return (
     <Routes>
       <Route path={AUTH_ROUTES.splash} element={<SplashScreen />} />
