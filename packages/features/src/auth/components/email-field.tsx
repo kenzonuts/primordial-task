@@ -6,6 +6,7 @@ import { cn } from '@shared/ui/lib/cn';
 import { Input } from '@shared/ui/primitives/input';
 
 type EmailFieldProps = {
+  readonly name?: 'email';
   readonly label?: string;
   readonly placeholder?: string;
   readonly disabled?: boolean;
@@ -14,6 +15,7 @@ type EmailFieldProps = {
 };
 
 export const EmailField = ({
+  name = 'email',
   label = 'Email',
   placeholder = 'you@company.com',
   disabled = false,
@@ -25,7 +27,7 @@ export const EmailField = ({
   return (
     <FormField
       control={control}
-      name="email"
+      name={name}
       render={({ field, fieldState }) => (
         <FormItem className={cn(className)}>
           <FormLabel>{label}</FormLabel>

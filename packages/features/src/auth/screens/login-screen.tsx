@@ -41,15 +41,10 @@ export const LoginScreen = (): React.ReactElement => {
 
   const {
     handleSubmit,
-    setFocus,
     watch,
     setValue,
     formState: { isSubmitting },
   } = form;
-
-  useEffect(() => {
-    setFocus('email');
-  }, [setFocus]);
 
   useEffect(() => {
     if (error) {
@@ -120,12 +115,12 @@ export const LoginScreen = (): React.ReactElement => {
         <Form {...form}>
           <form className="mt-8 flex flex-col gap-4" onSubmit={onSubmit} noValidate>
             {error ? (
-              <AuthenticationAlert ref={alertRef} variant="danger" tabIndex={-1}>
+              <AuthenticationAlert ref={alertRef} variant="danger">
                 {error}
               </AuthenticationAlert>
             ) : null}
 
-            <EmailField name="email" disabled={isBusy} />
+            <EmailField disabled={isBusy} autoFocus />
             <PasswordField
               name="password"
               label="Password"
@@ -135,6 +130,7 @@ export const LoginScreen = (): React.ReactElement => {
 
             <RememberMeRow
               checked={rememberMe}
+              disabled={isBusy}
               onCheckedChange={(checked) => {
                 setValue('rememberMe', checked, { shouldDirty: true });
               }}

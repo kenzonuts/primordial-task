@@ -12,13 +12,19 @@ type AuthenticationLoaderProps = HTMLAttributes<HTMLDivElement> & {
 
 export const AuthenticationLoader = ({
   status,
-  label = 'Loading',
+  label,
   className,
   ...props
 }: AuthenticationLoaderProps): ReactElement => {
+  const spinnerLabel = label ?? status;
+
   return (
     <Stack gap={12} align="center" className={cn(className)} {...props}>
-      <LoadingIndicator label={label} size="page" />
+      <LoadingIndicator
+        size="page"
+        label={spinnerLabel}
+        className="gap-0 [&>span[aria-hidden]]:hidden"
+      />
       <Text as="p" variant="body-sm" muted role="status" aria-live="polite">
         {status}
       </Text>

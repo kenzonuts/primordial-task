@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthCard } from '@features/auth/components/auth-card';
@@ -165,7 +165,7 @@ export const RegisterScreen = (): React.ReactElement => {
         <Form {...form}>
           <form className="mt-7 flex flex-col gap-4" onSubmit={onSubmit} noValidate>
             {error ? (
-              <AuthenticationAlert ref={alertRef} variant="danger" tabIndex={-1}>
+              <AuthenticationAlert ref={alertRef} variant="danger">
                 {error}
               </AuthenticationAlert>
             ) : null}
@@ -190,7 +190,7 @@ export const RegisterScreen = (): React.ReactElement => {
               )}
             />
 
-            <EmailField name="email" disabled={isBusy} />
+            <EmailField disabled={isBusy} />
             <PasswordField
               name="password"
               label="Password"
@@ -205,7 +205,7 @@ export const RegisterScreen = (): React.ReactElement => {
               disabled={isBusy}
             />
 
-            <Controller
+            <FormField
               control={form.control}
               name="acceptTerms"
               render={({ field, fieldState }) => (

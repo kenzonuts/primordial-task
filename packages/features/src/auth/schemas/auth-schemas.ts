@@ -22,7 +22,7 @@ export const fullNameSchema = z
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Enter your password.'),
-  rememberMe: z.boolean().default(false),
+  rememberMe: z.boolean(),
 });
 
 export const registerSchema = z

@@ -103,7 +103,7 @@ export const SplashScreen = (): React.ReactElement => {
               </Button>
             </>
           ) : (
-            <AuthenticationLoader label={statusLabel} />
+            <AuthenticationLoader status={statusLabel} />
           )}
         </div>
       </div>

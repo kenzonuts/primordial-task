@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import type { ButtonHTMLAttributes, ReactElement, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
 
 import { cn } from '@shared/ui/lib/cn';
 import { Spinner } from '@shared/ui/primitives/spinner';
@@ -42,6 +42,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
     readonly loading?: boolean;
     readonly leftIcon?: ReactNode;
     readonly rightIcon?: ReactNode;
+    readonly ref?: Ref<HTMLButtonElement>;
   };
 
 export const Button = ({
@@ -55,6 +56,7 @@ export const Button = ({
   rightIcon,
   children,
   type = 'button',
+  ref,
   ...props
 }: ButtonProps): ReactElement => {
   const Comp = asChild ? Slot : 'button';
@@ -62,6 +64,7 @@ export const Button = ({
 
   return (
     <Comp
+      ref={ref}
       type={asChild ? undefined : type}
       className={cn(buttonVariants({ variant, size }), className)}
       disabled={asChild ? undefined : isDisabled}

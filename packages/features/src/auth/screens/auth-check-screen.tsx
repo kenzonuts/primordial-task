@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthLayout } from '@features/auth/components/auth-layout';
@@ -20,12 +20,9 @@ export const AuthCheckScreen = (): React.ReactElement => {
   const error = useAuthStore((state) => state.error);
   const [phase, setPhase] = useState<CheckPhase>('checking');
   const [attempt, setAttempt] = useState(0);
-  const signInButtonRef = useRef<HTMLButtonElement>(null);
-  const ranRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
-    ranRef.current = true;
 
     const run = async (): Promise<void> => {
       setPhase('checking');
@@ -71,13 +68,15 @@ export const AuthCheckScreen = (): React.ReactElement => {
           return;
         }
 
-        const destination = resolvePostAuthPath({
-          requiresEmailVerification,
-          workspaces,
-          intentPath,
-          selectedWorkspaceId,
-        });
-        navigate(destination, { replace: true });
+        navigate(
+          resolvePostAuthPath({
+            requiresEmailVerification,
+            workspaces,
+            intentPath,
+            selectedWorkspaceId,
+          }),
+          { replace: true },
+        );
       } catch {
         window.clearTimeout(refreshTimer);
         if (!cancelled) {
@@ -95,12 +94,11 @@ export const AuthCheckScreen = (): React.ReactElement => {
 
   useEffect(() => {
     if (phase === 'expired' || phase === 'failed') {
-      signInButtonRef.current?.focus();
+      document.getElementById('auth-check-sign-in-again')?.focus();
     }
   }, [phase]);
 
   const statusLabel = phase === 'refreshing' ? 'Restoring secure session' : 'Checking your session';
-
   const showRecovery = phase === 'expired' || phase === 'failed';
   const alertMessage =
     phase === 'expired'
@@ -120,7 +118,7 @@ export const AuthCheckScreen = (): React.ReactElement => {
                 {alertMessage}
               </AuthenticationAlert>
               <Button
-                ref={signInButtonRef}
+                id="auth-check-sign-in-again"
                 type="button"
                 variant="primary"
                 size="lg"
@@ -147,7 +145,7 @@ export const AuthCheckScreen = (): React.ReactElement => {
               ) : null}
             </>
           ) : (
-            <AuthenticationLoader label={statusLabel} />
+            <AuthenticationLoader status={statusLabel} />
           )}
         </div>
       </div>

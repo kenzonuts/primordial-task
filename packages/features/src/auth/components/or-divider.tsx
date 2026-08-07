@@ -11,11 +11,16 @@ type OrDividerProps = {
 
 export const OrDivider = ({ label = 'or', className }: OrDividerProps): ReactElement => {
   return (
-    <div className={cn('relative flex w-full items-center py-20', className)} role="separator">
-      <Divider className="absolute inset-x-0" />
-      <Text as="span" variant="caption" muted className="relative mx-auto bg-surface-base px-12">
+    <div
+      className={cn('flex w-full items-center gap-12 py-20', className)}
+      role="separator"
+      aria-label={label}
+    >
+      <Divider className="flex-1" />
+      <Text as="span" variant="caption" muted className="shrink-0">
         {label}
       </Text>
+      <Divider className="flex-1" />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import type { CSSProperties, ReactElement, ReactNode } from 'react';
 
-import { Stack } from '@shared/ui/layout/stack';
 import { cn } from '@shared/ui/lib/cn';
 import { Text } from '@shared/ui/typography/text';
 
@@ -38,29 +37,12 @@ export const AuthLayout = ({
           as="p"
           variant="caption"
           muted
-          aria-hidden={false}
           className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 min-[1024px]:bottom-32"
         >
           {version}
         </Text>
       ) : null}
     </div>
-  );
-};
-
-/** Compact centered status shell used by splash / auth-check screens. */
-export const AuthStatusLayout = ({
-  children,
-  maxWidth = 360,
-  version,
-  className,
-}: AuthLayoutProps): ReactElement => {
-  return (
-    <AuthLayout maxWidth={maxWidth} version={version} className={className}>
-      <Stack gap={24} align="center">
-        {children}
-      </Stack>
-    </AuthLayout>
   );
 };
 
