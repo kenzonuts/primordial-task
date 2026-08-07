@@ -13,6 +13,7 @@ import { useNavigationStore } from '@features/shell/store/navigation-store';
 import { useUtilityPanelStore } from '@features/shell/store/utility-panel-store';
 import { useWorkspaceUiStore } from '@features/shell/store/workspace-ui-store';
 import { APP_ROUTES, type ShellWorkspaceOption } from '@features/shell/types';
+import { TaskProvider } from '@features/task/context/task-context';
 import { WorkspaceProvider } from '@features/workspace/context/workspace-context';
 import { WORKSPACE_ROLE_LABELS } from '@features/workspace/rbac';
 import { getWorkspaceInitials } from '@features/workspace/services/workspace-service';
@@ -77,19 +78,21 @@ export const AuthenticatedLayout = (): ReactElement => {
   return (
     <WorkspaceProvider>
       <ProjectProvider>
-        <div className="flex h-screen overflow-hidden bg-bg-app">
-          <Sidebar />
-          <div className="flex min-w-0 flex-1 flex-col">
-            <TopNavigation />
-            <div className="flex min-h-0 flex-1">
-              <main className="flex-1 overflow-auto" id="main-content">
-                <Outlet />
-              </main>
-              {panelOpen ? isDashboard ? <DashboardUtilityPanel /> : <UtilityPanel /> : null}
+        <TaskProvider>
+          <div className="flex h-screen overflow-hidden bg-bg-app">
+            <Sidebar />
+            <div className="flex min-w-0 flex-1 flex-col">
+              <TopNavigation />
+              <div className="flex min-h-0 flex-1">
+                <main className="flex-1 overflow-auto" id="main-content">
+                  <Outlet />
+                </main>
+                {panelOpen ? isDashboard ? <DashboardUtilityPanel /> : <UtilityPanel /> : null}
+              </div>
             </div>
+            <CommandPalette />
           </div>
-          <CommandPalette />
-        </div>
+        </TaskProvider>
       </ProjectProvider>
     </WorkspaceProvider>
   );

@@ -47,10 +47,10 @@ export const TaskTimeline = ({ task, className }: TaskTimelineProps): ReactEleme
       aria-label="Task timeline"
       className={cn('rounded-lg border border-border-subtle bg-surface-card px-4 py-3', className)}
     >
-      <Inline gap={0} align="stretch" className="w-full">
+      <Inline gap={8} align="stretch" className="w-full">
         {points.map((point, index) => (
           <div key={point.key} role="listitem" className="relative min-w-0 flex-1">
-            <Stack gap={6} align="center" className="relative z-[1]">
+            <Stack gap={4} align="center" className="relative z-[1]">
               <span
                 aria-hidden="true"
                 className={cn(

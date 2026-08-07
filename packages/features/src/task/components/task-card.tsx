@@ -92,11 +92,11 @@ export const TaskCard = ({
     >
       <Stack gap={12} className="p-4">
         <Inline gap={8} align="start" justify="between" className="w-full">
-          <Stack gap={6} className="min-w-0 flex-1">
+          <Stack gap={8} className="min-w-0 flex-1">
             <Text as="span" variant="h4" truncate className="min-w-0">
               {task.title}
             </Text>
-            <Inline gap={6} align="center" className="flex-wrap">
+            <Inline gap={8} align="center" className="flex-wrap">
               <TaskStatusBadge status={task.status} />
               <TaskPriorityBadge priority={task.priority} />
             </Inline>

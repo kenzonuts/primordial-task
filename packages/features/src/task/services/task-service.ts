@@ -19,13 +19,13 @@ const STORAGE_KEY = 'primordial-tasks-v1';
 const PREFS_KEY = 'primordial-task-preferences-v1';
 
 interface TaskRepositoryState {
-  readonly tasks: Task[];
-  readonly checklists: Record<string, TaskChecklistItem[]>;
-  readonly comments: Record<string, TaskComment[]>;
-  readonly attachments: Record<string, TaskAttachment[]>;
-  readonly dependencies: Record<string, TaskDependency[]>;
-  readonly activity: Record<string, TaskActivityItem[]>;
-  readonly history: Record<string, TaskHistoryItem[]>;
+  tasks: Task[];
+  checklists: Record<string, TaskChecklistItem[]>;
+  comments: Record<string, TaskComment[]>;
+  attachments: Record<string, TaskAttachment[]>;
+  dependencies: Record<string, TaskDependency[]>;
+  activity: Record<string, TaskActivityItem[]>;
+  history: Record<string, TaskHistoryItem[]>;
 }
 
 const delay = async (ms = 180): Promise<void> => {

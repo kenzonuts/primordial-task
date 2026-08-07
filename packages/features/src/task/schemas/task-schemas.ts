@@ -31,44 +31,45 @@ export const taskLabelSchema = z.object({
 
 export const taskTagsSchema = z.array(z.string().trim().min(1).max(40)).max(20);
 
-export const taskChecklistItemSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().trim().min(1, 'Enter a checklist item.').max(200),
-  completed: z.boolean(),
-  orderIndex: z.number().int().nonnegative(),
+const refineTaskDates = <T extends { startDate?: number | null; dueDate?: number | null }>(
+  value: T,
+  ctx: z.RefinementCtx,
+): void => {
+  if (value.startDate != null && value.dueDate != null && value.dueDate < value.startDate) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Due date must be on or after the start date.',
+      path: ['dueDate'],
+    });
+  }
+};
+
+const createTaskObjectSchema = z.object({
+  projectId: z.string().min(1, 'Select a project.'),
+  parentTaskId: z.string().nullable().optional(),
+  title: taskTitleSchema,
+  description: taskDescriptionSchema,
+  status: taskStatusSchema,
+  priority: taskPrioritySchema,
+  type: taskTypeSchema,
+  assigneeId: z.string().nullable().optional(),
+  startDate: taskDateSchema,
+  dueDate: taskDateSchema,
+  estimatedMinutes: z.number().int().nonnegative().nullable().optional(),
+  labels: z.array(taskLabelSchema).optional(),
+  tags: taskTagsSchema.optional(),
 });
 
-export const createTaskSchema = z
-  .object({
-    projectId: z.string().min(1, 'Select a project.'),
-    parentTaskId: z.string().nullable().optional(),
-    title: taskTitleSchema,
-    description: taskDescriptionSchema,
-    status: taskStatusSchema.default('todo'),
-    priority: taskPrioritySchema.default('medium'),
-    type: taskTypeSchema.default('task'),
-    assigneeId: z.string().nullable().optional(),
-    startDate: taskDateSchema,
-    dueDate: taskDateSchema,
-    estimatedMinutes: z.number().int().nonnegative().nullable().optional(),
-    labels: z.array(taskLabelSchema).optional(),
-    tags: taskTagsSchema.optional(),
+export const createTaskSchema = createTaskObjectSchema.superRefine(refineTaskDates);
+
+export const updateTaskSchema = createTaskObjectSchema
+  .partial()
+  .extend({
+    title: taskTitleSchema.optional(),
+    projectId: z.string().min(1).optional(),
+    actualMinutes: z.number().int().nonnegative().nullable().optional(),
   })
-  .superRefine((value, ctx) => {
-    if (value.startDate != null && value.dueDate != null && value.dueDate < value.startDate) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Due date must be on or after the start date.',
-        path: ['dueDate'],
-      });
-    }
-  });
-
-export const updateTaskSchema = createTaskSchema.partial().extend({
-  title: taskTitleSchema.optional(),
-  projectId: z.string().min(1).optional(),
-  actualMinutes: z.number().int().nonnegative().nullable().optional(),
-});
+  .superRefine(refineTaskDates);
 
 export const quickCreateTaskSchema = z.object({
   title: taskTitleSchema,

@@ -134,7 +134,7 @@ export const TaskRow = ({
       </Text>
 
       {task.assignee ? (
-        <Inline gap={6} align="center" className="hidden w-32 shrink-0 lg:inline-flex">
+        <Inline gap={8} align="center" className="hidden w-32 shrink-0 lg:inline-flex">
           <Avatar size="xs">
             {task.assignee.avatarUrl ? <AvatarImage src={task.assignee.avatarUrl} alt="" /> : null}
             <AvatarFallback initials={personInitials(task.assignee.fullName)} />

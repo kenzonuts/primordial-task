@@ -26,7 +26,7 @@ const hasId = (
   if (collection instanceof Set) {
     return collection.has(id);
   }
-  return collection.includes(id);
+  return (collection as readonly string[]).includes(id);
 };
 
 export const TaskList = ({

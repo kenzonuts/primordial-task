@@ -39,7 +39,7 @@ const hasId = (
   if (collection instanceof Set) {
     return collection.has(id);
   }
-  return collection.includes(id);
+  return (collection as readonly string[]).includes(id);
 };
 
 const personInitials = (fullName: string): string => {
@@ -200,7 +200,7 @@ export const TaskTable = ({
                 </td>
                 <td className="hidden px-3 py-2.5 lg:table-cell">
                   {task.assignee ? (
-                    <Inline gap={6} align="center">
+                    <Inline gap={8} align="center">
                       <Avatar size="xs">
                         {task.assignee.avatarUrl ? (
                           <AvatarImage src={task.assignee.avatarUrl} alt="" />

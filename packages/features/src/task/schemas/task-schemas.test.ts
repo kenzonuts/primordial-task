@@ -29,15 +29,13 @@ describe('task validation schemas', () => {
     expect(parsed.priority).toBe('high');
   });
 
-  it('applies defaults for status, priority, and type', () => {
-    const parsed = createTaskSchema.parse({
+  it('requires status, priority, and type', () => {
+    const result = createTaskSchema.safeParse({
       projectId: 'proj-design',
       title: 'Minimal task',
     });
 
-    expect(parsed.status).toBe('todo');
-    expect(parsed.priority).toBe('medium');
-    expect(parsed.type).toBe('task');
+    expect(result.success).toBe(false);
   });
 
   it('rejects empty titles', () => {
