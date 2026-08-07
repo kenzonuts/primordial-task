@@ -109,9 +109,5 @@ export const findNavigationItem = (pathname: string) => {
   }
 
   // Nested module routes (e.g. /projects/:id) resolve to their parent nav item.
-  return (
-    ALL_NAVIGATION_ITEMS.find(
-      (item) => item.path !== '/' && pathname.startsWith(`${item.path}/`),
-    ) ?? null
-  );
+  return ALL_NAVIGATION_ITEMS.find((item) => pathname.startsWith(`${item.path}/`)) ?? null;
 };
