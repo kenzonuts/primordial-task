@@ -28,12 +28,7 @@ export const PinnedItemsWidget = (): ReactElement => {
   const items = useDashboardStore((state) => state.pinnedItems);
   const query = useDashboardStore((state) => state.filters.query);
   const scope = useDashboardStore((state) => state.filters.scope);
-  const scoped =
-    scope === 'pinned' || scope === 'all' || scope === 'favorites'
-      ? items
-      : scope === 'archived'
-        ? []
-        : items;
+  const scoped = scope === 'archived' ? [] : items;
   const visible = filterPinnedByQuery(scoped, query).slice(0, 5);
 
   return (
