@@ -28,6 +28,8 @@ export type {
 } from '@features/auth/schemas/auth-schemas';
 
 export { useAuthStore } from '@features/auth/store/auth-store';
+export { useSessionStore } from '@features/auth/store/session-store';
+export { useUserStore } from '@features/auth/store/user-store';
 
 export { AuthRouter } from '@features/auth/routes/auth-routes';
 export { ProtectedRoute, GuestRoute } from '@features/auth/guards';

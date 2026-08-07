@@ -2,9 +2,26 @@ import { create } from 'zustand';
 
 import type { LoginFormValues, RegisterFormValues } from '@features/auth/schemas/auth-schemas';
 import { createAuthService } from '@features/auth/services/mock-auth-service';
-import type { AuthStatus, AuthUser, AuthWorkspace, OAuthProvider } from '@features/auth/types';
+import { useSessionStore } from '@features/auth/store/session-store';
+import { useUserStore } from '@features/auth/store/user-store';
+import type {
+  AuthResult,
+  AuthStatus,
+  AuthUser,
+  AuthWorkspace,
+  OAuthProvider,
+} from '@features/auth/types';
 
 const authService = createAuthService();
+
+const syncFoundationStores = (result: AuthResult | null): void => {
+  useUserStore.getState().setUser(result?.user ?? null);
+  if (result?.session) {
+    useSessionStore.getState().setSession(result.session);
+  } else {
+    useSessionStore.getState().clear();
+  }
+};
 
 interface AuthStoreState {
   readonly status: AuthStatus;
@@ -57,6 +74,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
     try {
       const restored = await authService.restoreSession();
       if (restored) {
+        syncFoundationStores(restored);
         set({
           status: 'authenticated',
           user: restored.user,
@@ -70,6 +88,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
       const refreshed = await authService.refreshSession();
       if (refreshed) {
+        syncFoundationStores(refreshed);
         set({
           status: 'authenticated',
           user: refreshed.user,
@@ -81,6 +100,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         return 'authenticated';
       }
 
+      syncFoundationStores(null);
       set({
         status: 'unauthenticated',
         user: null,
@@ -90,6 +110,8 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
       });
       return 'unauthenticated';
     } catch {
+      useSessionStore.getState().markExpired();
+      useUserStore.getState().clear();
       set({
         status: 'error',
         error: 'We could not verify your session.',
@@ -106,6 +128,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         password: values.password,
         rememberMe: values.rememberMe,
       });
+      syncFoundationStores(result);
       set({
         status: 'authenticated',
         user: result.user,
@@ -132,6 +155,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         password: values.password,
         acceptTerms: values.acceptTerms,
       });
+      syncFoundationStores(result);
       set({
         status: 'authenticated',
         user: result.user,
@@ -168,6 +192,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
     set({ status: 'loading', error: null });
     try {
       const result = await authService.verifyEmail(code);
+      syncFoundationStores(result);
       set({
         status: 'authenticated',
         user: result.user,
@@ -192,6 +217,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
     set({ status: 'loading', error: null });
     try {
       const result = await authService.startOAuth(provider);
+      syncFoundationStores(result);
       set({
         status: 'authenticated',
         user: result.user,
@@ -228,6 +254,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
   logout: async () => {
     await authService.logout();
+    syncFoundationStores(null);
     set({
       status: 'unauthenticated',
       user: null,

@@ -4,12 +4,25 @@ import { InMemoryRouteRegistry } from '@core/routing/route-registry';
 export const createAppRouteRegistry = (): InMemoryRouteRegistry => {
   const registry = new InMemoryRouteRegistry();
 
-  registry.register({
-    id: 'root',
-    path: ROUTES.root,
-    title: 'Application Root',
-    lazy: false,
-  });
+  const routes = [
+    { id: 'splash', path: ROUTES.root, title: 'Splash' },
+    { id: 'auth-check', path: ROUTES.authCheck, title: 'Authentication Check' },
+    { id: 'welcome', path: ROUTES.welcome, title: 'Welcome' },
+    { id: 'login', path: ROUTES.login, title: 'Login' },
+    { id: 'register', path: ROUTES.register, title: 'Register' },
+    { id: 'forgot-password', path: ROUTES.forgotPassword, title: 'Forgot Password' },
+    { id: 'verify-email', path: ROUTES.verifyEmail, title: 'Verify Email' },
+    { id: 'workspaces', path: ROUTES.workspaces, title: 'Workspace Selection' },
+    { id: 'dashboard', path: ROUTES.dashboard, title: 'Dashboard' },
+    { id: 'session-expired', path: ROUTES.sessionExpired, title: 'Session Expired' },
+  ] as const;
+
+  for (const route of routes) {
+    registry.register({
+      ...route,
+      lazy: false,
+    });
+  }
 
   return registry;
 };
