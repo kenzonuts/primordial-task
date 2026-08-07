@@ -1,25 +1,20 @@
 import { create } from 'zustand';
 
-import type { AuthSession } from '@features/auth/types';
+import type { AuthUser } from '@features/auth/types';
 
-interface SessionStoreState {
-  readonly session: AuthSession | null;
-  readonly isExpired: boolean;
-  setSession(session: AuthSession | null): void;
-  markExpired(): void;
+interface UserStoreState {
+  readonly user: AuthUser | null;
+  setUser(user: AuthUser | null): void;
   clear(): void;
 }
 
-export const useSessionStore = create<SessionStoreState>((set) => ({
-  session: null,
-  isExpired: false,
-  setSession: (session) => {
-    set({ session, isExpired: false });
-  },
-  markExpired: () => {
-    set({ isExpired: true, session: null });
+/** Foundation-only user store for future profile modules. */
+export const useUserStore = create<UserStoreState>((set) => ({
+  user: null,
+  setUser: (user) => {
+    set({ user });
   },
   clear: () => {
-    set({ session: null, isExpired: false });
+    set({ user: null });
   },
 }));
