@@ -57,5 +57,3 @@ export type { UtilityPanelProps } from '@features/shell/components/utility-panel
 
 export { CommandPalette } from '@features/shell/components/command-palette';
 export type { CommandPaletteProps } from '@features/shell/components/command-palette';
-
-export { useCommandPaletteShortcut } from '@features/shell/components/use-command-palette-shortcut';

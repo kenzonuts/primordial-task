@@ -30,6 +30,8 @@ export {
 export { useWorkspaceUiStore } from '@features/shell/store/workspace-ui-store';
 export { useThemeUiStore } from '@features/shell/store/theme-ui-store';
 
+export { useCommandPaletteShortcut } from '@features/shell/hooks/use-command-palette-shortcut';
+
 export { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 export { ContentLayout } from '@features/shell/layouts/content-layout';
 export { ModulePlaceholderPage, PlaceholderPage } from '@features/shell/pages/placeholder-page';
