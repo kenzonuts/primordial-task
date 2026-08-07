@@ -7,9 +7,9 @@ import { Spinner } from '@shared/ui/primitives/spinner';
 
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium',
+    'inline-flex items-center justify-center gap-[8px] whitespace-nowrap font-medium',
     'rounded-md ds-transition-fast select-none',
-    'focus-visible:outline-none focus-visible:ds-focus-ring',
+    'focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--state-focus)]',
     'disabled:pointer-events-none disabled:opacity-[var(--opacity-disabled)]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   ],
@@ -24,9 +24,9 @@ const buttonVariants = cva(
           'bg-danger-bg text-danger hover:bg-[color-mix(in_srgb,var(--danger)_22%,transparent)] active:bg-[color-mix(in_srgb,var(--danger)_28%,transparent)]',
       },
       size: {
-        sm: 'h-7 px-2.5 text-xs leading-4 [&_svg]:size-3.5',
-        md: 'h-8 px-3 text-sm leading-[22px] [&_svg]:size-4',
-        lg: 'h-10 px-4 text-sm leading-[22px] [&_svg]:size-4',
+        sm: 'h-[28px] px-[10px] text-xs leading-4 [&_svg]:size-[14px]',
+        md: 'h-[32px] px-[12px] text-sm leading-[22px] [&_svg]:size-[16px]',
+        lg: 'h-[40px] px-[16px] text-sm leading-[22px] [&_svg]:size-[16px]',
       },
     },
     defaultVariants: {
@@ -70,9 +70,15 @@ export const Button = ({
       data-loading={loading || undefined}
       {...props}
     >
-      {loading ? <Spinner size="button" className="text-current" /> : leftIcon}
-      {children}
-      {!loading ? rightIcon : null}
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {loading ? <Spinner size="button" className="text-current" /> : leftIcon}
+          {children}
+          {!loading ? rightIcon : null}
+        </>
+      )}
     </Comp>
   );
 };

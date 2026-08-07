@@ -1,61 +1,48 @@
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Check, Minus } from 'lucide-react';
 import type { ComponentPropsWithoutRef, ReactElement } from 'react';
 
 import { cn } from '@shared/ui/lib/cn';
 
-const checkboxVariants = cva(
-  [
-    'peer relative inline-flex size-8 shrink-0 items-center justify-center',
-    'rounded-md focus-visible:outline-none focus-visible:ds-focus-ring',
-    'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-disabled)]',
-  ],
-  {
-    variants: {},
-    defaultVariants: {},
-  },
-);
+type CheckboxProps = ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>;
 
-const checkboxControlVariants = cva([
-  'flex size-4 items-center justify-center rounded-[var(--radius-sm)] border',
-  'bg-surface-input text-gray-950 ds-transition-fast',
-  'border-border-default',
-  'data-[state=checked]:border-gray-100 data-[state=checked]:bg-gray-100',
-  'data-[state=indeterminate]:border-gray-100 data-[state=indeterminate]:bg-gray-100',
-]);
-
-type CheckboxProps = ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> &
-  VariantProps<typeof checkboxVariants>;
-
-export const Checkbox = ({ className, checked, ...props }: CheckboxProps): ReactElement => {
+export const Checkbox = ({ className, ...props }: CheckboxProps): ReactElement => {
   return (
     <CheckboxPrimitive.Root
-      checked={checked}
-      className={cn(checkboxVariants(), className)}
+      className={cn(
+        [
+          'group peer relative inline-flex size-[32px] shrink-0 items-center justify-center',
+          'rounded-md focus-visible:outline-none',
+          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--state-focus)]',
+          'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-disabled)]',
+        ],
+        className,
+      )}
       {...props}
     >
       <span
-        className={cn(
-          checkboxControlVariants(),
-          checked === true || checked === 'indeterminate' ? 'border-gray-100 bg-gray-100' : null,
-        )}
-        data-state={
-          checked === 'indeterminate' ? 'indeterminate' : checked ? 'checked' : 'unchecked'
-        }
         aria-hidden
+        className={cn(
+          'flex size-[16px] items-center justify-center rounded-[var(--radius-sm)] border',
+          'bg-surface-input text-gray-950 ds-transition-fast',
+          'border-border-default',
+          'group-data-[state=checked]:border-gray-100 group-data-[state=checked]:bg-gray-100',
+          'group-data-[state=indeterminate]:border-gray-100 group-data-[state=indeterminate]:bg-gray-100',
+        )}
       >
         <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-          {checked === 'indeterminate' ? (
-            <Minus className="size-3" strokeWidth={2.5} />
-          ) : (
-            <Check className="size-3" strokeWidth={2.5} />
-          )}
+          <Check
+            className="size-[12px] group-data-[state=indeterminate]:hidden"
+            strokeWidth={2.5}
+          />
+          <Minus
+            className="hidden size-[12px] group-data-[state=indeterminate]:block"
+            strokeWidth={2.5}
+          />
         </CheckboxPrimitive.Indicator>
       </span>
     </CheckboxPrimitive.Root>
   );
 };
 
-export { checkboxVariants };
 export type { CheckboxProps };

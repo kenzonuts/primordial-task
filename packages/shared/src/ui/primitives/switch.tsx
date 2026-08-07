@@ -8,15 +8,16 @@ const switchVariants = cva(
   [
     'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent',
     'bg-surface-elevated ds-transition-fast',
-    'focus-visible:outline-none focus-visible:ds-focus-ring',
+    'focus-visible:outline-none',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--state-focus)]',
     'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-disabled)]',
     'data-[state=checked]:bg-gray-100',
   ],
   {
     variants: {
       size: {
-        sm: 'h-4 w-7',
-        md: 'h-5 w-9',
+        sm: 'h-[16px] w-[28px]',
+        md: 'h-[20px] w-[36px]',
       },
     },
     defaultVariants: {
@@ -33,8 +34,8 @@ const switchThumbVariants = cva(
   {
     variants: {
       size: {
-        sm: 'size-3 translate-x-0.5 data-[state=checked]:translate-x-3',
-        md: 'size-4 translate-x-0.5 data-[state=checked]:translate-x-4',
+        sm: 'size-[12px] translate-x-[2px] data-[state=checked]:translate-x-[12px]',
+        md: 'size-[16px] translate-x-[2px] data-[state=checked]:translate-x-[16px]',
       },
     },
     defaultVariants: {

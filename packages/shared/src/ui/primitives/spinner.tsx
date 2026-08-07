@@ -9,8 +9,8 @@ const spinnerVariants = cva(
     variants: {
       size: {
         inline: 'size-[14px]',
-        button: 'size-4',
-        page: 'size-6',
+        button: 'size-[16px]',
+        page: 'size-[24px]',
       },
     },
     defaultVariants: {

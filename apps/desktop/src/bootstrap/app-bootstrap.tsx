@@ -10,6 +10,12 @@ import { createLogger } from '@core/logging/logger';
 import { QueryProvider } from '@shared/hooks/use-query-provider';
 import { useRootStore } from '@shared/hooks/use-root-store';
 import { ServiceContainerProvider } from '@shared/hooks/use-service-container';
+import { LoadingIndicator } from '@shared/ui/composites/loading-indicator';
+import { Toaster } from '@shared/ui/feedback/toast';
+import { Surface } from '@shared/ui/layout/surface';
+import { TooltipProvider } from '@shared/ui/overlays/tooltip';
+import { ThemeProvider } from '@shared/ui/theme/theme-provider';
+import { Text } from '@shared/ui/typography/text';
 
 interface ErrorBoundaryState {
   readonly hasError: boolean;
@@ -45,7 +51,16 @@ class AppErrorBoundary extends Component<PropsWithChildren, ErrorBoundaryState> 
 
   render(): ReactNode {
     if (this.state.hasError && this.state.error) {
-      return <div role="alert">Application initialization failed: {this.state.error.message}</div>;
+      return (
+        <Surface
+          variant="base"
+          className="grid min-h-screen place-items-center p-[var(--space-24)]"
+        >
+          <Text as="p" role="alert" variant="body-md">
+            Application initialization failed: {this.state.error.message}
+          </Text>
+        </Surface>
+      );
     }
 
     return this.props.children;
@@ -71,20 +86,42 @@ const AppBootstrapHost = (): ReactNode => {
   }, [context, error, isLoading, setAppReady, setBootstrapError]);
 
   if (isLoading) {
-    return <div>Loading application infrastructure...</div>;
+    return (
+      <Surface variant="base" className="grid min-h-screen place-items-center">
+        <LoadingIndicator label="Loading application infrastructure..." />
+      </Surface>
+    );
   }
 
   if (error) {
-    return <div role="alert">Application bootstrap failed: {error.message}</div>;
+    return (
+      <Surface variant="base" className="grid min-h-screen place-items-center p-[var(--space-24)]">
+        <Text as="p" role="alert" variant="body-md">
+          Application bootstrap failed: {error.message}
+        </Text>
+      </Surface>
+    );
   }
 
   if (!context) {
-    return <div role="alert">Application bootstrap context unavailable.</div>;
+    return (
+      <Surface variant="base" className="grid min-h-screen place-items-center p-[var(--space-24)]">
+        <Text as="p" role="alert" variant="body-md">
+          Application bootstrap context unavailable.
+        </Text>
+      </Surface>
+    );
   }
 
   return (
     <ServiceContainerProvider container={context.container}>
-      <Suspense fallback={<div>Loading shell...</div>}>
+      <Suspense
+        fallback={
+          <Surface variant="base" className="grid min-h-screen place-items-center">
+            <LoadingIndicator label="Loading shell..." />
+          </Surface>
+        }
+      >
         <App />
       </Suspense>
     </ServiceContainerProvider>
@@ -94,11 +131,16 @@ const AppBootstrapHost = (): ReactNode => {
 export const AppBootstrap = (): ReactNode => {
   return (
     <StrictMode>
-      <AppErrorBoundary>
-        <QueryProvider>
-          <AppBootstrapHost />
-        </QueryProvider>
-      </AppErrorBoundary>
+      <ThemeProvider>
+        <TooltipProvider delayDuration={500}>
+          <AppErrorBoundary>
+            <QueryProvider>
+              <AppBootstrapHost />
+              <Toaster />
+            </QueryProvider>
+          </AppErrorBoundary>
+        </TooltipProvider>
+      </ThemeProvider>
     </StrictMode>
   );
 };

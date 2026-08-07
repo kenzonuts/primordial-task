@@ -9,7 +9,7 @@ const iconButtonVariants = cva(
   [
     'inline-flex items-center justify-center shrink-0 rounded-md',
     'ds-transition-fast select-none',
-    'focus-visible:outline-none focus-visible:ds-focus-ring',
+    'focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--state-focus)]',
     'disabled:pointer-events-none disabled:opacity-[var(--opacity-disabled)]',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   ],
@@ -25,9 +25,9 @@ const iconButtonVariants = cva(
           'bg-transparent text-danger hover:bg-danger-bg active:bg-[color-mix(in_srgb,var(--danger)_22%,transparent)]',
       },
       size: {
-        sm: 'size-7 [&_svg]:size-3.5',
-        md: 'size-8 [&_svg]:size-4',
-        lg: 'size-10 [&_svg]:size-5',
+        sm: 'size-[28px] [&_svg]:size-[14px]',
+        md: 'size-[32px] [&_svg]:size-[16px]',
+        lg: 'size-[40px] [&_svg]:size-[20px]',
       },
     },
     defaultVariants: {
@@ -72,7 +72,7 @@ export const IconButton = ({
       title={title ?? ariaLabel}
       {...props}
     >
-      {loading ? <Spinner size="button" className="text-current" /> : children}
+      {asChild ? children : loading ? <Spinner size="button" className="text-current" /> : children}
     </Comp>
   );
 };

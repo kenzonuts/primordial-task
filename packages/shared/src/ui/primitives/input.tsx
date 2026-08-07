@@ -8,16 +8,17 @@ const inputVariants = cva(
     'flex w-full min-w-0 rounded-md border bg-surface-input text-text-primary',
     'placeholder:text-text-placeholder',
     'ds-transition-fast',
-    'focus-visible:outline-none focus-visible:border-border-strong focus-visible:ds-focus-ring',
+    'focus-visible:outline-none focus-visible:border-border-strong',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--state-focus)]',
     'disabled:cursor-not-allowed disabled:opacity-[var(--opacity-disabled)]',
     'file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-text-primary',
   ],
   {
     variants: {
       size: {
-        sm: 'h-7 px-2 text-xs leading-4',
-        md: 'h-8 px-3 text-sm leading-[22px]',
-        lg: 'h-10 px-3 text-sm leading-[22px]',
+        sm: 'h-[28px] px-[8px] text-xs leading-4',
+        md: 'h-[32px] px-[12px] text-sm leading-[22px]',
+        lg: 'h-[40px] px-[12px] text-sm leading-[22px]',
       },
       error: {
         true: 'border-danger focus-visible:border-danger',
@@ -35,15 +36,16 @@ const inputWrapperVariants = cva(
   [
     'relative flex w-full items-center rounded-md border bg-surface-input',
     'ds-transition-fast',
-    'focus-within:border-border-strong focus-within:ds-focus-ring',
+    'focus-within:border-border-strong',
+    'focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--state-focus)]',
     'has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-[var(--opacity-disabled)]',
   ],
   {
     variants: {
       size: {
-        sm: 'h-7',
-        md: 'h-8',
-        lg: 'h-10',
+        sm: 'h-[28px]',
+        md: 'h-[32px]',
+        lg: 'h-[40px]',
       },
       error: {
         true: 'border-danger focus-within:border-danger',
@@ -85,7 +87,7 @@ export const Input = ({
         data-invalid={isInvalid || undefined}
       >
         {leading ? (
-          <span className="pointer-events-none flex shrink-0 items-center pl-2 text-text-muted [&_svg]:size-4">
+          <span className="pointer-events-none flex shrink-0 items-center pl-[8px] text-text-muted [&_svg]:size-[16px]">
             {leading}
           </span>
         ) : null}
@@ -94,17 +96,17 @@ export const Input = ({
           disabled={disabled}
           aria-invalid={isInvalid || undefined}
           className={cn(
-            'h-full w-full min-w-0 flex-1 bg-transparent px-2 text-text-primary outline-none',
+            'h-full w-full min-w-0 flex-1 bg-transparent px-[8px] text-text-primary outline-none',
             'placeholder:text-text-placeholder',
             size === 'sm' && 'text-xs leading-4',
             (size === 'md' || size === 'lg' || !size) && 'text-sm leading-[22px]',
-            leading && 'pl-1.5',
-            trailing && 'pr-1.5',
+            leading && 'pl-[6px]',
+            trailing && 'pr-[6px]',
           )}
           {...props}
         />
         {trailing ? (
-          <span className="flex shrink-0 items-center pr-2 text-text-muted [&_svg]:size-4">
+          <span className="flex shrink-0 items-center pr-[8px] text-text-muted [&_svg]:size-[16px]">
             {trailing}
           </span>
         ) : null}

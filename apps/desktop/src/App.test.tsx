@@ -3,10 +3,11 @@ import { describe, expect, it } from 'vitest';
 
 import App from '@/App';
 
-describe('foundation smoke test', () => {
-  it('renders the starter shell', () => {
+describe('design system shell smoke test', () => {
+  it('renders the design system initialized shell', () => {
     render(<App />);
 
-    expect(screen.getByText(/primordial task foundation initialized/i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /primordial task/i })).toBeTruthy();
+    expect(screen.getByText(/design system initialized/i)).toBeTruthy();
   });
 });
