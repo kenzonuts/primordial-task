@@ -1,0 +1,14 @@
+export { TodaysTasksWidget } from '@features/dashboard/widgets/todays-tasks-widget';
+export { OverdueTasksWidget } from '@features/dashboard/widgets/overdue-tasks-widget';
+export { UpcomingDeadlinesWidget } from '@features/dashboard/widgets/upcoming-deadlines-widget';
+export { RecentProjectsWidget } from '@features/dashboard/widgets/recent-projects-widget';
+export { ProjectProgressWidget } from '@features/dashboard/widgets/project-progress-widget';
+export { RecentActivityWidget } from '@features/dashboard/widgets/recent-activity-widget';
+export { PinnedItemsWidget } from '@features/dashboard/widgets/pinned-items-widget';
+export { FavoriteProjectsWidget } from '@features/dashboard/widgets/favorite-projects-widget';
+export { AiDailySummaryWidget } from '@features/dashboard/widgets/ai-daily-summary-widget';
+export { RecommendationsWidget } from '@features/dashboard/widgets/recommendations-widget';
+export { RiskDetectionWidget } from '@features/dashboard/widgets/risk-detection-widget';
+export { ProductivityInsightsWidget } from '@features/dashboard/widgets/productivity-insights-widget';
+export { QuickNotesWidget } from '@features/dashboard/widgets/quick-notes-widget';
+export { UpcomingMeetingsWidget } from '@features/dashboard/widgets/upcoming-meetings-widget';

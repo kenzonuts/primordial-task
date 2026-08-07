@@ -1,5 +1,5 @@
 /**
- * Backward-compatible re-export of the shell module placeholder.
- * Prefer importing ModulePlaceholderPage from @features/shell.
+ * Backward-compatible re-export of the Dashboard page.
+ * Prefer importing DashboardPage from @features/dashboard.
  */
-export { ModulePlaceholderPage as DashboardPlaceholderScreen } from '@features/shell/pages/placeholder-page';
+export { DashboardPage as DashboardPlaceholderScreen } from '@features/dashboard';

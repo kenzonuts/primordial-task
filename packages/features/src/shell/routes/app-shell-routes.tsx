@@ -2,6 +2,7 @@ import type { ReactElement, ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 
 import { ProtectedRoute } from '@features/auth/guards/protected-route';
+import { DashboardPage } from '@features/dashboard';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { ModulePlaceholderPage } from '@features/shell/pages/placeholder-page';
 import { APP_ROUTES } from '@features/shell/types';
@@ -30,7 +31,7 @@ export const AuthenticatedAppShell = (): ReactElement => {
  */
 export const AppShellRoutes: ReactNode = (
   <>
-    <Route path={APP_ROUTES.dashboard} element={<ModulePlaceholderPage />} />
+    <Route path={APP_ROUTES.dashboard} element={<DashboardPage />} />
     <Route path={APP_ROUTES.projects} element={<ModulePlaceholderPage />} />
     <Route path={APP_ROUTES.tasks} element={<ModulePlaceholderPage />} />
     <Route path={APP_ROUTES.kanban} element={<ModulePlaceholderPage />} />

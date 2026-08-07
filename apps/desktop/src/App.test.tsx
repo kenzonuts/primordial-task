@@ -5,6 +5,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthRouter } from '@features/auth';
 import { useAuthStore } from '@features/auth/store/auth-store';
 import { AUTH_ROUTES } from '@features/auth/types';
+import { DashboardPage } from '@features/dashboard';
+import { useDashboardStore } from '@features/dashboard/store/dashboard-store';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { ModulePlaceholderPage } from '@features/shell/pages/placeholder-page';
 import { APP_ROUTES } from '@features/shell/types';
@@ -96,6 +98,12 @@ describe('application shell routing', () => {
       intentPath: null,
       pendingEmail: null,
     });
+    useDashboardStore.setState({
+      summary: null,
+      status: 'idle',
+      error: null,
+      todaysTasks: [],
+    });
     window.localStorage.clear();
   });
 
@@ -115,6 +123,26 @@ describe('application shell routing', () => {
     });
     expect(screen.getAllByText(/dashboard/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/coming soon/i).length).toBeGreaterThan(0);
+  });
+
+  it('renders dashboard greeting for authenticated users', async () => {
+    render(
+      <MemoryRouter initialEntries={[APP_ROUTES.dashboard]}>
+        <Routes>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path={APP_ROUTES.dashboard} element={<DashboardPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
+        expect(screen.getByRole('heading', { level: 1 }).textContent).toMatch(/Demo/i);
+      },
+      { timeout: 5000 },
+    );
   });
 
   it('exposes select-workspace auth route separately from shell workspaces', () => {

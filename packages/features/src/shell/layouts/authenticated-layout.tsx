@@ -1,6 +1,7 @@
 import { useEffect, type ReactElement } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { DashboardUtilityPanel } from '@features/dashboard/panels/dashboard-utility-panel';
 import { CommandPalette } from '@features/shell/components/command-palette';
 import { Sidebar } from '@features/shell/components/sidebar';
 import { TopNavigation } from '@features/shell/components/top-navigation';
@@ -10,7 +11,7 @@ import { findNavigationItem } from '@features/shell/navigation';
 import { useNavigationStore } from '@features/shell/store/navigation-store';
 import { useUtilityPanelStore } from '@features/shell/store/utility-panel-store';
 import { useWorkspaceUiStore } from '@features/shell/store/workspace-ui-store';
-import type { ShellWorkspaceOption } from '@features/shell/types';
+import { APP_ROUTES, type ShellWorkspaceOption } from '@features/shell/types';
 import { WorkspaceProvider } from '@features/workspace/context/workspace-context';
 import { WORKSPACE_ROLE_LABELS } from '@features/workspace/rbac';
 import { getWorkspaceInitials } from '@features/workspace/services/workspace-service';
@@ -30,6 +31,8 @@ export const AuthenticatedLayout = (): ReactElement => {
   const setActivePath = useNavigationStore((state) => state.setActivePath);
   const setBreadcrumbs = useNavigationStore((state) => state.setBreadcrumbs);
   const panelOpen = useUtilityPanelStore((state) => state.open);
+  const setPanelOpen = useUtilityPanelStore((state) => state.setOpen);
+  const isDashboard = location.pathname === APP_ROUTES.dashboard;
 
   useCommandPaletteShortcut();
 
@@ -64,6 +67,12 @@ export const AuthenticatedLayout = (): ReactElement => {
     setBreadcrumbs([{ label: item.label, path: item.path }]);
   }, [location.pathname, setActivePath, setBreadcrumbs]);
 
+  useEffect(() => {
+    if (isDashboard) {
+      setPanelOpen(true);
+    }
+  }, [isDashboard, setPanelOpen]);
+
   return (
     <WorkspaceProvider>
       <div className="flex h-screen overflow-hidden bg-bg-app">
@@ -74,7 +83,7 @@ export const AuthenticatedLayout = (): ReactElement => {
             <main className="flex-1 overflow-auto" id="main-content">
               <Outlet />
             </main>
-            {panelOpen ? <UtilityPanel /> : null}
+            {panelOpen ? isDashboard ? <DashboardUtilityPanel /> : <UtilityPanel /> : null}
           </div>
         </div>
         <CommandPalette />
