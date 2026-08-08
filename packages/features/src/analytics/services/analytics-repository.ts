@@ -471,7 +471,16 @@ export class DomainAnalyticsRepository implements AnalyticsRepository {
     now: number,
     weeks: number,
   ): MemberAnalyticsRow[] {
-    const map = new Map<string, MemberAnalyticsRow & { completedIds: number }>();
+    type MemberDraft = {
+      memberId: string;
+      memberName: string;
+      assigned: number;
+      completed: number;
+      overdue: number;
+      capacityPercent: number;
+      estimatedMinutes: number;
+    };
+    const map = new Map<string, MemberDraft>();
     for (const task of tasks) {
       const memberId = task.assignee?.id ?? 'unassigned';
       const memberName = task.assignee?.fullName ?? 'Unassigned';
@@ -485,8 +494,7 @@ export class DomainAnalyticsRepository implements AnalyticsRepository {
           overdue: 0,
           capacityPercent: 0,
           estimatedMinutes: 0,
-          completedIds: 0,
-        } as MemberAnalyticsRow & { completedIds: number });
+        } satisfies MemberDraft);
       if (isOpen(task)) {
         existing.assigned += 1;
         existing.estimatedMinutes += task.estimatedMinutes ?? 0;
