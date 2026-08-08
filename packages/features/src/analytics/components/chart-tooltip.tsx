@@ -1,17 +1,37 @@
 import type { ReactElement } from 'react';
-import type { TooltipContentProps } from 'recharts';
 
 import { Stack } from '@shared/ui/layout/stack';
 import { cn } from '@shared/ui/lib/cn';
 import { Text } from '@shared/ui/typography/text';
 
-type ChartTooltipProps = TooltipContentProps<number, string> & {
+type TooltipEntry = {
+  readonly name?: string | number;
+  readonly value?: unknown;
+  readonly color?: string;
+  readonly dataKey?: string | number;
+};
+
+type ChartTooltipProps = {
+  readonly active?: boolean;
+  // Recharts TooltipPayload is structurally compatible at runtime
+  readonly payload?: ReadonlyArray<TooltipEntry> | null;
+  readonly label?: string | number;
   readonly className?: string;
+};
+
+const formatValue = (value: unknown): string => {
+  if (value == null) {
+    return '—';
+  }
+  if (Array.isArray(value)) {
+    return value.map(String).join(', ');
+  }
+  return String(value);
 };
 
 /**
  * Monochrome Recharts tooltip content.
- * Pass as `<Tooltip content={<ChartTooltip />} />` or `content={ChartTooltip}`.
+ * Use via `<Tooltip content={(props) => <ChartTooltip {...props} />} />`.
  */
 export const ChartTooltip = ({
   active,
@@ -38,17 +58,17 @@ export const ChartTooltip = ({
           </Text>
         ) : null}
         {payload.map((entry) => (
-          <div key={String(entry.dataKey)} className="flex items-center gap-2">
+          <div key={String(entry.dataKey ?? entry.name)} className="flex items-center gap-2">
             <span
               className="size-2 shrink-0 rounded-sm"
-              style={{ backgroundColor: String(entry.color ?? '#A3A3A3') }}
+              style={{ backgroundColor: entry.color ?? '#A3A3A3' }}
               aria-hidden="true"
             />
             <Text as="span" variant="caption" className="text-text-secondary">
-              {entry.name}
+              {entry.name == null ? '' : String(entry.name)}
             </Text>
             <Text as="span" variant="mono" className="ml-auto tabular-nums text-text-primary">
-              {entry.value == null ? '—' : String(entry.value)}
+              {formatValue(entry.value)}
             </Text>
           </div>
         ))}
@@ -57,4 +77,4 @@ export const ChartTooltip = ({
   );
 };
 
-export type { ChartTooltipProps };
+export type { ChartTooltipProps, TooltipEntry };

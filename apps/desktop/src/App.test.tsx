@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { ANALYTICS_ROUTES, AnalyticsRoutes } from '@features/analytics';
 import { AuthRouter } from '@features/auth';
 import { useAuthStore } from '@features/auth/store/auth-store';
 import { AUTH_ROUTES } from '@features/auth/types';
@@ -21,6 +22,7 @@ import { APP_ROUTES } from '@features/shell/types';
 import { TaskListPage } from '@features/task';
 import { useTaskStore } from '@features/task/store/task-store';
 import { useWorkspaceStore } from '@features/workspace/store/workspace-store';
+import { QueryProvider } from '@shared/hooks/use-query-provider';
 
 describe('authentication routing', () => {
   beforeEach(() => {
@@ -640,6 +642,89 @@ describe('application shell routing', () => {
         expect(screen.getByRole('heading', { name: /notes/i })).toBeTruthy();
       },
       { timeout: 5000 },
+    );
+  });
+
+  it('renders analytics overview for authenticated users', async () => {
+    useWorkspaceStore.setState({
+      workspaces: [
+        {
+          id: 'ws-1',
+          name: 'Primordial Studio',
+          slug: 'primordial-studio',
+          description: '',
+          color: '#E6E6E6',
+          visibility: 'private',
+          role: 'owner',
+          owner: {
+            id: 'user-1',
+            fullName: 'Demo User',
+            email: 'demo@primordial.task',
+          },
+          memberCount: 1,
+          isFavorite: false,
+          lastUsedAt: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          archivedAt: null,
+        },
+      ],
+      currentWorkspace: {
+        id: 'ws-1',
+        name: 'Primordial Studio',
+        slug: 'primordial-studio',
+        description: '',
+        color: '#E6E6E6',
+        visibility: 'private',
+        role: 'owner',
+        owner: {
+          id: 'user-1',
+          fullName: 'Demo User',
+          email: 'demo@primordial.task',
+        },
+        memberCount: 1,
+        isFavorite: false,
+        lastUsedAt: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        archivedAt: null,
+      },
+      previousWorkspaceId: null,
+      lastUsedWorkspaceId: 'ws-1',
+      members: [],
+      preferences: {
+        defaultView: 'dashboard',
+        density: 'comfortable',
+        showArchivedInSwitcher: false,
+      },
+      filters: {
+        query: '',
+        sort: 'recent',
+        filter: 'all',
+      },
+      status: 'ready',
+      membersStatus: 'idle',
+      error: null,
+      initialized: true,
+    });
+
+    render(
+      <QueryProvider>
+        <MemoryRouter initialEntries={[ANALYTICS_ROUTES.overview]}>
+          <Routes>
+            <Route element={<AuthenticatedLayout />}>{AnalyticsRoutes}</Route>
+          </Routes>
+        </MemoryRouter>
+      </QueryProvider>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('analytics-shell')).toBeTruthy();
+        expect(screen.getByTestId('analytics-overview-page')).toBeTruthy();
+        expect(screen.getByRole('heading', { name: /analytics overview/i })).toBeTruthy();
+      },
+      { timeout: 8000 },
     );
   });
 });

@@ -1,11 +1,11 @@
 import type { ReactElement } from 'react';
 
-import { AnalyticsFilters as AnalyticsFiltersControl } from '@features/analytics/components/analytics-filters';
+import { AnalyticsFilters } from '@features/analytics/components/analytics-filters';
 import type { FilterOption } from '@features/analytics/components/analytics-filters';
 import { TimeRangeSelector } from '@features/analytics/components/time-range-selector';
 import {
   ANALYTICS_SECTIONS,
-  type AnalyticsFilters,
+  type AnalyticsFilters as AnalyticsFiltersState,
   type AnalyticsSection,
   type TimeRangePreset,
 } from '@features/analytics/types';
@@ -31,8 +31,8 @@ type AnalyticsToolbarProps = {
   readonly onSectionChange: (section: AnalyticsSection) => void;
   readonly timeRangePreset: TimeRangePreset;
   readonly onTimeRangeChange: (preset: TimeRangePreset) => void;
-  readonly filters: AnalyticsFilters;
-  readonly onFiltersChange: (partial: Partial<AnalyticsFilters>) => void;
+  readonly filters: AnalyticsFiltersState;
+  readonly onFiltersChange: (partial: Partial<AnalyticsFiltersState>) => void;
   readonly onResetFilters?: () => void;
   readonly projectOptions?: readonly FilterOption[];
   readonly memberOptions?: readonly FilterOption[];
@@ -102,7 +102,7 @@ export const AnalyticsToolbar = ({
         </Inline>
       </Inline>
 
-      <AnalyticsFiltersControl
+      <AnalyticsFilters
         filters={filters}
         onChange={onFiltersChange}
         onReset={onResetFilters}

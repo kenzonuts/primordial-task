@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import type { AnalyticsFilters } from '@features/analytics/types';
+import type { AnalyticsFilters as AnalyticsFiltersState } from '@features/analytics/types';
 import { Inline } from '@shared/ui/layout/inline';
 import { Stack } from '@shared/ui/layout/stack';
 import { cn } from '@shared/ui/lib/cn';
@@ -21,12 +21,12 @@ type FilterOption = {
 };
 
 type AnalyticsFiltersProps = {
-  readonly filters: AnalyticsFilters;
+  readonly filters: AnalyticsFiltersState;
   readonly projectOptions?: readonly FilterOption[];
   readonly memberOptions?: readonly FilterOption[];
   readonly statusOptions?: readonly FilterOption[];
   readonly priorityOptions?: readonly FilterOption[];
-  readonly onChange: (partial: Partial<AnalyticsFilters>) => void;
+  readonly onChange: (partial: Partial<AnalyticsFiltersState>) => void;
   readonly onReset?: () => void;
   readonly className?: string;
 };
@@ -50,7 +50,7 @@ const ToggleGroup = ({
   }
 
   return (
-    <Inline gap={4} align="center" role="group" aria-label={label} className="flex-wrap">
+    <Inline gap={4} align="center" wrap role="group" aria-label={label}>
       <Text as="span" variant="caption" muted className="shrink-0">
         {label}
       </Text>
@@ -74,7 +74,7 @@ const ToggleGroup = ({
   );
 };
 
-export const AnalyticsFiltersBar = ({
+export const AnalyticsFilters = ({
   filters,
   projectOptions = [],
   memberOptions = [],
@@ -91,9 +91,16 @@ export const AnalyticsFiltersBar = ({
         ? (projectOptions.find((p) => p.id === filters.projectIds[0])?.label ?? '1 project')
         : `${filters.projectIds.length} projects`;
 
+  const memberSummary =
+    filters.memberIds.length === 0
+      ? 'All members'
+      : filters.memberIds.length === 1
+        ? (memberOptions.find((m) => m.id === filters.memberIds[0])?.label ?? '1 member')
+        : `${filters.memberIds.length} members`;
+
   return (
     <Stack gap={8} className={cn('w-full', className)} role="group" aria-label="Analytics filters">
-      <Inline gap={8} align="center" className="flex-wrap">
+      <Inline gap={8} align="center" wrap>
         {projectOptions.length > 0 ? (
           <Select
             value={filters.projectIds[0] ?? '__all__'}
@@ -102,14 +109,11 @@ export const AnalyticsFiltersBar = ({
                 onChange({ projectIds: [] });
                 return;
               }
-              const next = toggleId(filters.projectIds, value);
-              // Simple multi: selecting again via list adds; "__clear__" resets
               onChange({
                 projectIds: filters.projectIds.includes(value)
                   ? filters.projectIds.filter((id) => id !== value)
                   : [...filters.projectIds, value],
               });
-              void next;
             }}
           >
             <SelectTrigger size="sm" aria-label="Filter by project" className="w-[180px]">
@@ -142,14 +146,7 @@ export const AnalyticsFiltersBar = ({
             }}
           >
             <SelectTrigger size="sm" aria-label="Filter by member" className="w-[160px]">
-              <SelectValue placeholder="Members">
-                {filters.memberIds.length === 0
-                  ? 'All members'
-                  : filters.memberIds.length === 1
-                    ? (memberOptions.find((m) => m.id === filters.memberIds[0])?.label ??
-                      '1 member')
-                    : `${filters.memberIds.length} members`}
-              </SelectValue>
+              <SelectValue placeholder="Members">{memberSummary}</SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="__all__">All members</SelectItem>
@@ -196,8 +193,5 @@ export const AnalyticsFiltersBar = ({
     </Stack>
   );
 };
-
-// Spec name alias
-export const AnalyticsFilters = AnalyticsFiltersBar;
 
 export type { AnalyticsFiltersProps, FilterOption };

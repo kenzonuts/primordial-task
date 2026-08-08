@@ -1,6 +1,7 @@
 import { useEffect, type ReactElement } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 
+import { AnalyticsProvider } from '@features/analytics/context/analytics-context';
 import { CalendarProvider } from '@features/calendar/context/calendar-context';
 import { DashboardUtilityPanel } from '@features/dashboard/panels/dashboard-utility-panel';
 import { KanbanProvider } from '@features/kanban/context/kanban-context';
@@ -85,25 +86,27 @@ export const AuthenticatedLayout = (): ReactElement => {
           <KanbanProvider>
             <CalendarProvider>
               <NotesProvider>
-                <div className="flex h-screen overflow-hidden bg-bg-app">
-                  <Sidebar />
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <TopNavigation />
-                    <div className="flex min-h-0 flex-1">
-                      <main className="flex-1 overflow-auto" id="main-content">
-                        <Outlet />
-                      </main>
-                      {panelOpen ? (
-                        isDashboard ? (
-                          <DashboardUtilityPanel />
-                        ) : (
-                          <UtilityPanel />
-                        )
-                      ) : null}
+                <AnalyticsProvider>
+                  <div className="flex h-screen overflow-hidden bg-bg-app">
+                    <Sidebar />
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <TopNavigation />
+                      <div className="flex min-h-0 flex-1">
+                        <main className="flex-1 overflow-auto" id="main-content">
+                          <Outlet />
+                        </main>
+                        {panelOpen ? (
+                          isDashboard ? (
+                            <DashboardUtilityPanel />
+                          ) : (
+                            <UtilityPanel />
+                          )
+                        ) : null}
+                      </div>
                     </div>
+                    <CommandPalette />
                   </div>
-                  <CommandPalette />
-                </div>
+                </AnalyticsProvider>
               </NotesProvider>
             </CalendarProvider>
           </KanbanProvider>

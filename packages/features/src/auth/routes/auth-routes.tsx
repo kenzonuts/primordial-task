@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { AnalyticsRoutes } from '@features/analytics/routes/analytics-routes';
 import { GuestRoute } from '@features/auth/guards/guest-route';
 import { ProtectedRoute } from '@features/auth/guards/protected-route';
 import { AuthCheckScreen } from '@features/auth/screens/auth-check-screen';
@@ -90,6 +91,7 @@ export const AuthRouter = (): ReactElement => {
         {KanbanRoutes}
         {CalendarRoutes}
         {NotesRoutes}
+        {AnalyticsRoutes}
       </Route>
 
       <Route path="*" element={<Navigate to={AUTH_ROUTES.splash} replace />} />

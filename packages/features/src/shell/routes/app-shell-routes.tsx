@@ -32,7 +32,6 @@ export const AuthenticatedAppShell = (): ReactElement => {
 export const AppShellRoutes: ReactNode = (
   <>
     <Route path={APP_ROUTES.dashboard} element={<DashboardPage />} />
-    <Route path={APP_ROUTES.analytics} element={<ModulePlaceholderPage />} />
     <Route path={APP_ROUTES.aiWorkspace} element={<ModulePlaceholderPage />} />
     <Route path={APP_ROUTES.developerWorkspace} element={<ModulePlaceholderPage />} />
     <Route path={APP_ROUTES.settings} element={<ModulePlaceholderPage />} />

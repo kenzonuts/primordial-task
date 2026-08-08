@@ -31,7 +31,7 @@ export const ChartLegend = ({ items, className }: ChartLegendProps): ReactElemen
       {items.map((item, index) => {
         const color = item.color ?? CHART_SERIES_COLORS[index % CHART_SERIES_COLORS.length]!;
         return (
-          <Inline key={item.id} gap={6} align="center" role="listitem">
+          <Inline key={item.id} gap={4} align="center" role="listitem">
             <span
               className="size-2.5 shrink-0 rounded-sm"
               style={{ backgroundColor: color }}
