@@ -1,11 +1,21 @@
 import type { ReactElement } from 'react';
+import { useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { DaySummaryPanel } from '@features/calendar/components/day-summary-panel';
+import {
+  calendarService,
+  useCalendarNavigationStore,
+  useCalendarSelectionStore,
+  useCalendarStore,
+} from '@features/calendar/store';
+import { startOfDay } from '@features/calendar/utils/date-utils';
 import { useKanbanLayoutStore } from '@features/kanban/store/layout-store';
 import { PanelContent } from '@features/shell/components/panel-content';
 import { PanelHeader } from '@features/shell/components/panel-header';
 import { ResizablePanel } from '@features/shell/components/resizable-panel';
 import { useUtilityPanelStore } from '@features/shell/store/utility-panel-store';
-import type { UtilityPanelMode } from '@features/shell/types';
+import { APP_ROUTES, type UtilityPanelMode } from '@features/shell/types';
 import { TaskDetailPanel } from '@features/task/components/task-detail-panel';
 import { Card, CardDescription, CardHeader, CardTitle } from '@shared/ui/composites/card';
 import { cn } from '@shared/ui/lib/cn';
@@ -76,10 +86,24 @@ const PlaceholderCard = ({
 };
 
 export const UtilityPanel = ({ className }: UtilityPanelProps): ReactElement | null => {
+  const location = useLocation();
   const mode = useUtilityPanelStore((state) => state.mode);
   const setOpen = useUtilityPanelStore((state) => state.setOpen);
   const detailTaskId = useKanbanLayoutStore((state) => state.detailTaskId);
   const closeDetail = useKanbanLayoutStore((state) => state.closeDetail);
+  const openDetail = useKanbanLayoutStore((state) => state.openDetail);
+  const setMode = useUtilityPanelStore((state) => state.setMode);
+
+  const events = useCalendarStore((state) => state.events);
+  const anchorDate = useCalendarNavigationStore((state) => state.anchorDate);
+  const focusedDate = useCalendarSelectionStore((state) => state.focusedDate);
+
+  const isCalendarRoute = location.pathname.startsWith(APP_ROUTES.calendar);
+
+  const daySummary = useMemo(() => {
+    const date = focusedDate ?? startOfDay(anchorDate);
+    return calendarService.buildDaySummary(events, date);
+  }, [events, focusedDate, anchorDate]);
 
   if (mode === 'task-details') {
     return (
@@ -101,7 +125,25 @@ export const UtilityPanel = ({ className }: UtilityPanelProps): ReactElement | n
               setOpen(false);
             }}
             emptyTitle="No task selected"
-            emptyDescription="Open a task card from Kanban or Tasks to inspect details here."
+            emptyDescription="Open a task card from Kanban, Calendar, or Tasks to inspect details here."
+          />
+        </PanelContent>
+      </ResizablePanel>
+    );
+  }
+
+  if (mode === 'placeholder' && isCalendarRoute) {
+    return (
+      <ResizablePanel className={className} aria-label="Day summary">
+        <PanelHeader title="Day summary" onClose={() => setOpen(false)} />
+        <PanelContent className="overflow-hidden p-0">
+          <DaySummaryPanel
+            summary={daySummary}
+            className="h-full"
+            onOpenEvent={(event) => {
+              openDetail(event.taskId);
+              setMode('task-details');
+            }}
           />
         </PanelContent>
       </ResizablePanel>

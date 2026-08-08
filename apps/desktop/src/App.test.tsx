@@ -5,6 +5,8 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthRouter } from '@features/auth';
 import { useAuthStore } from '@features/auth/store/auth-store';
 import { AUTH_ROUTES } from '@features/auth/types';
+import { CalendarPage } from '@features/calendar';
+import { useCalendarStore } from '@features/calendar/store/calendar-store';
 import { DashboardPage } from '@features/dashboard';
 import { useDashboardStore } from '@features/dashboard/store/dashboard-store';
 import { BoardListPage } from '@features/kanban';
@@ -451,6 +453,101 @@ describe('application shell routing', () => {
     await waitFor(
       () => {
         expect(screen.getByRole('heading', { name: /kanban/i })).toBeTruthy();
+      },
+      { timeout: 5000 },
+    );
+  });
+
+  it('renders calendar for authenticated users', async () => {
+    useWorkspaceStore.setState({
+      workspaces: [
+        {
+          id: 'ws-1',
+          name: 'Primordial Studio',
+          slug: 'primordial-studio',
+          description: '',
+          color: '#E6E6E6',
+          visibility: 'private',
+          role: 'owner',
+          owner: {
+            id: 'user-1',
+            fullName: 'Demo User',
+            email: 'demo@primordial.task',
+          },
+          memberCount: 1,
+          isFavorite: false,
+          lastUsedAt: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          archivedAt: null,
+        },
+      ],
+      currentWorkspace: {
+        id: 'ws-1',
+        name: 'Primordial Studio',
+        slug: 'primordial-studio',
+        description: '',
+        color: '#E6E6E6',
+        visibility: 'private',
+        role: 'owner',
+        owner: {
+          id: 'user-1',
+          fullName: 'Demo User',
+          email: 'demo@primordial.task',
+        },
+        memberCount: 1,
+        isFavorite: false,
+        lastUsedAt: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        archivedAt: null,
+      },
+      previousWorkspaceId: null,
+      lastUsedWorkspaceId: 'ws-1',
+      members: [],
+      preferences: {
+        defaultView: 'dashboard',
+        density: 'comfortable',
+        showArchivedInSwitcher: false,
+      },
+      filters: {
+        query: '',
+        sort: 'recent',
+        filter: 'all',
+      },
+      status: 'ready',
+      membersStatus: 'idle',
+      error: null,
+      initialized: true,
+    });
+    useCalendarStore.setState({
+      events: [],
+      milestones: [],
+      status: 'idle',
+      error: null,
+      workspaceId: null,
+    });
+    useTaskStore.setState({
+      tasks: [],
+      status: 'idle',
+      error: null,
+      workspaceId: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={[APP_ROUTES.calendar]}>
+        <Routes>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path={APP_ROUTES.calendar} element={<CalendarPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('calendar-page')).toBeTruthy();
+        expect(screen.getByRole('heading', { name: /calendar/i })).toBeTruthy();
       },
       { timeout: 5000 },
     );
