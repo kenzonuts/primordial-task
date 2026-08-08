@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 
+import { useCalendarStore } from '@features/calendar/store/calendar-store';
+
 interface DragStoreState {
   readonly activeEventIds: readonly string[];
   readonly mode: 'move' | 'resize-start' | 'resize-end' | null;
@@ -60,7 +62,6 @@ export const useCalendarDragStore = create<DragStoreState>((set) => ({
     }),
 
   commitMove: async (workspaceId, updates) => {
-    const { useCalendarStore } = await import('@features/calendar/store/calendar-store');
     const calendar = useCalendarStore.getState();
     const rollback = updates.map((update) => {
       const event = calendar.events.find((item) => item.taskId === update.taskId);
