@@ -108,7 +108,7 @@ export const TagSelector = ({
       ) : null}
 
       {suggestions.length > 0 ? (
-        <Inline gap={6} wrap>
+        <Inline gap={8} wrap>
           {suggestions
             .filter((name) => !tags.some((tag) => tag.name === name))
             .slice(0, 8)
