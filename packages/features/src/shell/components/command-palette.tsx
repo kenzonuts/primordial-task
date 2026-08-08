@@ -53,6 +53,16 @@ const RECENT_COMMANDS: readonly PaletteCommand[] = [
     path: APP_ROUTES.calendar,
   },
   {
+    id: 'nav-notes',
+    label: 'Navigate to Notes',
+    path: APP_ROUTES.notes,
+  },
+  {
+    id: 'nav-docs',
+    label: 'Navigate to Documentation',
+    path: APP_ROUTES.docs,
+  },
+  {
     id: 'nav-analytics',
     label: 'Navigate to Analytics',
     path: APP_ROUTES.analytics,

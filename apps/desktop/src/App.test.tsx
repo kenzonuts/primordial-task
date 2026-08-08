@@ -11,6 +11,8 @@ import { DashboardPage } from '@features/dashboard';
 import { useDashboardStore } from '@features/dashboard/store/dashboard-store';
 import { BoardListPage } from '@features/kanban';
 import { useKanbanBoardStore } from '@features/kanban/store/board-store';
+import { NotesExplorerPage } from '@features/notes';
+import { useNotesStore } from '@features/notes/store/notes-store';
 import { ProjectListPage } from '@features/project';
 import { useProjectStore } from '@features/project/store/project-store';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
@@ -548,6 +550,94 @@ describe('application shell routing', () => {
       () => {
         expect(screen.getByTestId('calendar-page')).toBeTruthy();
         expect(screen.getByRole('heading', { name: /calendar/i })).toBeTruthy();
+      },
+      { timeout: 5000 },
+    );
+  });
+
+  it('renders notes explorer for authenticated users', async () => {
+    useWorkspaceStore.setState({
+      workspaces: [
+        {
+          id: 'ws-1',
+          name: 'Primordial Studio',
+          slug: 'primordial-studio',
+          description: '',
+          color: '#E6E6E6',
+          visibility: 'private',
+          role: 'owner',
+          owner: {
+            id: 'user-1',
+            fullName: 'Demo User',
+            email: 'demo@primordial.task',
+          },
+          memberCount: 1,
+          isFavorite: false,
+          lastUsedAt: Date.now(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          archivedAt: null,
+        },
+      ],
+      currentWorkspace: {
+        id: 'ws-1',
+        name: 'Primordial Studio',
+        slug: 'primordial-studio',
+        description: '',
+        color: '#E6E6E6',
+        visibility: 'private',
+        role: 'owner',
+        owner: {
+          id: 'user-1',
+          fullName: 'Demo User',
+          email: 'demo@primordial.task',
+        },
+        memberCount: 1,
+        isFavorite: false,
+        lastUsedAt: Date.now(),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        archivedAt: null,
+      },
+      previousWorkspaceId: null,
+      lastUsedWorkspaceId: 'ws-1',
+      members: [],
+      preferences: {
+        defaultView: 'dashboard',
+        density: 'comfortable',
+        showArchivedInSwitcher: false,
+      },
+      filters: {
+        query: '',
+        sort: 'recent',
+        filter: 'all',
+      },
+      status: 'ready',
+      membersStatus: 'idle',
+      error: null,
+      initialized: true,
+    });
+    useNotesStore.setState({
+      notes: [],
+      status: 'idle',
+      error: null,
+      workspaceId: null,
+    });
+
+    render(
+      <MemoryRouter initialEntries={[APP_ROUTES.notes]}>
+        <Routes>
+          <Route element={<AuthenticatedLayout />}>
+            <Route path={APP_ROUTES.notes} element={<NotesExplorerPage />} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('notes-explorer-page')).toBeTruthy();
+        expect(screen.getByRole('heading', { name: /notes/i })).toBeTruthy();
       },
       { timeout: 5000 },
     );

@@ -15,6 +15,7 @@ import { WorkspaceSelectionScreen } from '@features/auth/screens/workspace-selec
 import { AUTH_ROUTES } from '@features/auth/types';
 import { CalendarRoutes } from '@features/calendar/routes/calendar-routes';
 import { KanbanRoutes } from '@features/kanban/routes/kanban-routes';
+import { NotesRoutes } from '@features/notes/routes/notes-routes';
 import { ProjectRoutes } from '@features/project/routes/project-routes';
 import { AuthenticatedLayout } from '@features/shell/layouts/authenticated-layout';
 import { AppShellRoutes } from '@features/shell/routes/app-shell-routes';
@@ -88,6 +89,7 @@ export const AuthRouter = (): ReactElement => {
         {TaskRoutes}
         {KanbanRoutes}
         {CalendarRoutes}
+        {NotesRoutes}
       </Route>
 
       <Route path="*" element={<Navigate to={AUTH_ROUTES.splash} replace />} />

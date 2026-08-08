@@ -4,6 +4,8 @@ export const APP_ROUTES = {
   tasks: '/tasks',
   kanban: '/kanban',
   calendar: '/calendar',
+  notes: '/notes',
+  docs: '/docs',
   analytics: '/analytics',
   aiWorkspace: '/ai-workspace',
   developerWorkspace: '/developer-workspace',

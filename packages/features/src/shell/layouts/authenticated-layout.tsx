@@ -4,6 +4,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { CalendarProvider } from '@features/calendar/context/calendar-context';
 import { DashboardUtilityPanel } from '@features/dashboard/panels/dashboard-utility-panel';
 import { KanbanProvider } from '@features/kanban/context/kanban-context';
+import { NotesProvider } from '@features/notes/context/notes-context';
 import { ProjectProvider } from '@features/project/context/project-context';
 import { CommandPalette } from '@features/shell/components/command-palette';
 import { Sidebar } from '@features/shell/components/sidebar';
@@ -83,19 +84,27 @@ export const AuthenticatedLayout = (): ReactElement => {
         <TaskProvider>
           <KanbanProvider>
             <CalendarProvider>
-              <div className="flex h-screen overflow-hidden bg-bg-app">
-                <Sidebar />
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <TopNavigation />
-                  <div className="flex min-h-0 flex-1">
-                    <main className="flex-1 overflow-auto" id="main-content">
-                      <Outlet />
-                    </main>
-                    {panelOpen ? isDashboard ? <DashboardUtilityPanel /> : <UtilityPanel /> : null}
+              <NotesProvider>
+                <div className="flex h-screen overflow-hidden bg-bg-app">
+                  <Sidebar />
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <TopNavigation />
+                    <div className="flex min-h-0 flex-1">
+                      <main className="flex-1 overflow-auto" id="main-content">
+                        <Outlet />
+                      </main>
+                      {panelOpen ? (
+                        isDashboard ? (
+                          <DashboardUtilityPanel />
+                        ) : (
+                          <UtilityPanel />
+                        )
+                      ) : null}
+                    </div>
                   </div>
+                  <CommandPalette />
                 </div>
-                <CommandPalette />
-              </div>
+              </NotesProvider>
             </CalendarProvider>
           </KanbanProvider>
         </TaskProvider>

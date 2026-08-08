@@ -47,6 +47,14 @@ export const NAVIGATION_GROUPS: readonly NavigationGroup[] = [
         description: 'Schedule, deadlines, and meetings.',
       },
       {
+        id: 'notes',
+        label: 'Notes',
+        path: APP_ROUTES.notes,
+        icon: 'NotebookPen',
+        group: 'primary',
+        description: 'Notes, templates, and documentation.',
+      },
+      {
         id: 'analytics',
         label: 'Analytics',
         path: APP_ROUTES.analytics,
