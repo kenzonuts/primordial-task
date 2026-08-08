@@ -16,7 +16,6 @@ import {
   useAnalyticsReportStore,
   useAnalyticsTimeRangeStore,
 } from '@features/analytics/store';
-import type { AnalyticsSection } from '@features/analytics/types';
 import { toast } from '@shared/ui/feedback/toast';
 import { Inline } from '@shared/ui/layout/inline';
 import { Stack } from '@shared/ui/layout/stack';
@@ -75,7 +74,7 @@ export const AnalyticsReportsPage = (): ReactElement => {
               addReport({
                 name: config.name.trim(),
                 description: `Saved from analytics · ${config.chartIds.length} charts`,
-                section: 'reports' as AnalyticsSection,
+                section: 'reports',
                 filters: { ...filters, workspaceId },
                 timeRangePreset: preset,
                 chartIds: config.chartIds,
